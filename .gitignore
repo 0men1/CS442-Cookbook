@@ -16,6 +16,9 @@ node_modules/
 !.yarn/releases
 !.yarn/versions
 
+# IDE
+.idea
+
 # testing
 coverage/
 # next.js
