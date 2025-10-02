@@ -10,6 +10,11 @@ export default function Home() {
 
       <ModeToggle />
 
+      <div>This is the home page</div>
+      <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/">Home</a>
+      <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-in">Sign in</a>
+      <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-up">Sign up</a>
+
       {/* About Paragraph */}
       <div className = "m-10 p-5">
         <h1 className="text-center font-bold text-xl">About</h1>
@@ -57,10 +62,7 @@ export default function Home() {
       </div>
 
 
-      <div>This is the home page</div>
-      <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/">Home</a>
-      <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-in">Sign in</a>
-      <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-up">Sign up</a>
+
 
 
     </div>
