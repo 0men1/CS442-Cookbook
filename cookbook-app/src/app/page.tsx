@@ -1,8 +1,12 @@
 import { ModeToggle } from "@/components/theme/ModeToggle"
 
+import Navbar from "@/components/ui/navbar";
+
 export default function Home() {
   return (
     <div className="flex flex-col gap-5 w-full h-full items-center">
+
+      <Navbar />
 
       <ModeToggle />
 
