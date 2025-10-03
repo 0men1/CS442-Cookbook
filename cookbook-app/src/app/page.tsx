@@ -1,13 +1,10 @@
 "use client";
 
-import { ModeToggle } from "@/components/theme/ModeToggle"
-
-import Navbar from "@/components/ui/navbar";
 import RecipeGrid from "@/components/recipe/RecipeGrid";
-import SearchBar from "@/components/ui/SearchBar";
+import SearchBar from "@/components/SearchBar";
 import { useState } from "react";
 
-export default function Home() { 
+export default function Home() {
   //hard coding for now
   const recipes = [
     { id: "1", title: "Homemade Pizza", image: "/assets/homemade_pizza.jpg" },
@@ -28,33 +25,19 @@ export default function Home() {
     recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-
   return (
     <div className="flex flex-col gap-5 w-full h-full items-center">
 
-      <Navbar />
-
-      <ModeToggle />
-
-      <div>This is the home page</div>
-      <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/">Home</a>
-      <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-in">Sign in</a>
-      <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-up">Sign up</a>
-
-      {/* Recipie Gallary/Grid with search*/}
       <div className="p-6">
-        <h1 className="text-center text-2xl font-bold mb-6">Recipe Gallery</h1>
-
         <div className="flex justify-center mb-6">
           <SearchBar onSearch={(q) => setSearchQuery(q)} />
-        </div> 
-        
+        </div>
         <RecipeGrid recipes={filteredRecipes} />
       </div>
 
 
       {/* About Paragraph */}
-      <div className = "m-10 p-5">
+      <div className="m-10 p-5">
         <h1 className="text-center font-bold text-xl">About</h1>
         <p className="text-center text-gray-150">
           <br></br>
@@ -83,14 +66,14 @@ export default function Home() {
         <div className="flex flex-wrap gap-2">
           <div className="flex-1 aspect-square">
             <img
-              src = "/assets/beefyboi.jpg"
+              src="/assets/beefyboi.jpg"
               alt="Image 1"
               className="w-full h-full object-cover"
             />
           </div>
           <div className="flex-1 aspect-square">
             <img
-              src = "/assets/charcuterieBoard.jpg"
+              src="/assets/charcuterieBoard.jpg"
               alt="Image 2"
               className="w-full h-full object-cover"
             />
