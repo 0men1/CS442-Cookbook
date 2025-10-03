@@ -1,0 +1,12 @@
+{
+  "id": "2",
+  "title": "Hot Chocolate",
+  "image": "/assets/hotchocolate.jpg",
+  "description": "Creamy Homemade Hot Chocolate. A combination of cocoa powder and chocolate chips make this hot chocolate extra flavorful and delicious! Ready in minutes.",
+  "steps": [
+    "Place milk, cocoa powder and sugar in a small saucepan. ",
+    "Heat over medium/medium-low heat, whisking frequently, until warm (but not boiling).",
+    "Add chocolate chips and whisk constantly until the chocolate chips melt and distribute evenly into the milk. ",
+    "Whisk in vanilla extract and a pinch of salt (if desired), serve immediately."
+  ]
+}

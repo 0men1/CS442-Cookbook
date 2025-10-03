@@ -41,8 +41,6 @@ export default function Home() {
       <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-in">Sign in</a>
       <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-up">Sign up</a>
 
-    
-
       {/* Recipie Gallary/Grid with search*/}
       <div className="p-6">
         <h1 className="text-center text-2xl font-bold mb-6">Recipe Gallery</h1>
@@ -98,13 +96,7 @@ export default function Home() {
             />
           </div>
         </div>
-
       </div>
-
-
-
-
-
     </div>
   );
 }
