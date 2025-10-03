@@ -1,0 +1,12 @@
+{
+  "id": "8",
+  "title": "Chicken Soup",
+  "image": "/assets/chicken_soup.jpg",
+  "description": "The best chicken soup doesn’t need much — just tender poached chicken, hearty winter vegetables, and fresh herbs simmered in chicken broth. It’s a simple combination that’s a cozy hug for your taste buds and the best kind of immunity boost.",
+  "steps": [
+    "Saute the veggies. Heat the oil in a large pot on medium heat. Add the carrots, parsnips, celery, leek, and onion to the pot and cook for 4 to 5 minutes, stirring frequently. Add the garlic, salt, and pepper, and stir for another minute.",
+    "Poach the chicken. Add the thyme, tarragon, bay leaf, chicken, and broth. Bring to a boil, then reduce the heat to low and cover the pot. Simmer the soup for 15 minutes, or until the chicken is fully cooked.",
+    "Shred the chicken. With tongs, remove the chicken to a cutting board and then gently shred the chicken with two forks. Place the shredded chicken back into the pot and simmer for an additional 1 to 2 minutes.",
+    "Serve. Remove the sprigs of thyme, tarragon and the bay leaf. Stir in the parsley, and garnish with additional fresh parsley and black pepper before serving."
+  ]
+}

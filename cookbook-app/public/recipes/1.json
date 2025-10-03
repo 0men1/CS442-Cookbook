@@ -1,0 +1,12 @@
+{
+  "id": "1",
+  "title": "Homemade Pizza",
+  "image": "/assets/homemade_pizza.jpg",
+  "description": "Are you a pizza person? (Is there a person who is not a pizza person?) We do pizza every Friday at our house! We usually make it right here at home. (not always. Sometimes you just need to order pizza, amiright?) I’ve been making homemade pizza for years and years, and have lots of tips and tricks to share.",
+  "steps": [
+    "roll 12-16 oz dough",
+    "Add Pizza/Marinara Sauce",
+    "Add toppings including cheese",
+    "Bake for 8-12 minutes @550 F"
+  ]
+}
