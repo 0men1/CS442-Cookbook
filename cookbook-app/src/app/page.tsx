@@ -1,7 +1,11 @@
+"use client";
+
 import { ModeToggle } from "@/components/theme/ModeToggle"
 
 import Navbar from "@/components/ui/navbar";
 import RecipeGrid from "@/components/recipe/RecipeGrid";
+import SearchBar from "@/components/ui/SearchBar";
+import { useState } from "react";
 
 export default function Home() { 
   //hard coding for now
@@ -18,6 +22,11 @@ export default function Home() {
     { id: "10", title: "Chicago Style Hot Dog", image: "/assets/chicago_hot_dog.jpg" },
   ];
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredRecipes = recipes.filter((recipe) =>
+    recipe.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
 
   return (
@@ -32,11 +41,17 @@ export default function Home() {
       <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-in">Sign in</a>
       <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-up">Sign up</a>
 
+    
 
-      {/* Recipie Gallary/Grid */}
+      {/* Recipie Gallary/Grid with search*/}
       <div className="p-6">
         <h1 className="text-center text-2xl font-bold mb-6">Recipe Gallery</h1>
-        <RecipeGrid recipes={recipes} />
+
+        <div className="flex justify-center mb-6">
+          <SearchBar onSearch={(q) => setSearchQuery(q)} />
+        </div> 
+        
+        <RecipeGrid recipes={filteredRecipes} />
       </div>
 
 
