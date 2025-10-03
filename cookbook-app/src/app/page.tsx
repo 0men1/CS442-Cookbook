@@ -1,8 +1,25 @@
 import { ModeToggle } from "@/components/theme/ModeToggle"
 
 import Navbar from "@/components/ui/navbar";
+import RecipeGrid from "@/components/recipe/RecipeGrid";
 
-export default function Home() {
+export default function Home() { 
+  //hard coding for now
+  const recipes = [
+    { id: "1", title: "Homemade Pizza", image: "/assets/homemade_pizza.jpg" },
+    { id: "2", title: "Hot Chocolate", image: "/assets/hotchocolate.jpg" },
+    { id: "3", title: "Classic House Salad", image: "/assets/house-salad.jpeg" },
+    { id: "4", title: "Pakistani Seekh Kebab", image: "/assets/kebab.jpg" },
+    { id: "5", title: "Homemade Lemonade", image: "/assets/lemonade.jpg" },
+    { id: "6", title: "Steak", image: "/assets/steak.jpg" },
+    { id: "7", title: "Korean Instant Ramen Trick", image: "/assets/ramen.jpg" },
+    { id: "8", title: "Ultimate Chicken Soup", image: "/assets/chicken_soup.jpg" },
+    { id: "9", title: "Chicken Fried Rice", image: "/assets/chicken-fried-rice.jpg" },
+    { id: "10", title: "Chicago Style Hot Dog", image: "/assets/chicago_hot_dog.jpg" },
+  ];
+
+
+
   return (
     <div className="flex flex-col gap-5 w-full h-full items-center">
 
@@ -14,6 +31,14 @@ export default function Home() {
       <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/">Home</a>
       <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-in">Sign in</a>
       <a className="border-1 w-fit px-3 py-2 rounded-xl" href="/sign-up">Sign up</a>
+
+
+      {/* Recipie Gallary/Grid */}
+      <div className="p-6">
+        <h1 className="text-center text-2xl font-bold mb-6">Recipe Gallery</h1>
+        <RecipeGrid recipes={recipes} />
+      </div>
+
 
       {/* About Paragraph */}
       <div className = "m-10 p-5">
