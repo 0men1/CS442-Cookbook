@@ -1,23 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.utils import timezone
 from .managers import CustomUserManager
 import uuid
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(
-        primary_key=True, default=uuid.uuid4(), editable=False)
-    first_name = models.CharField(blank=True)
-    last_name = models.CharField(blank=True)
-    username = models.CharField(unique=True)
+        primary_key=True, default=uuid.uuid4, editable=False)
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(unique=True)
 
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_chef = models.BooleanField(default=False)
 
-    date_joined = models.DateTimeField(timezone.now())
+    createdAt = models.DateTimeField(auto_now_add=True)
+    updatedAt = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = "email"
 
@@ -26,4 +26,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     def __str__(self):
-        return f"{self.last_name} | {self.username} | {self.email}"
+        return f"{self.id} | {self.email}"
