@@ -6,19 +6,19 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { FaApple, FaGoogle } from "react-icons/fa"
 
 import * as z from "zod"
-import { RegisterSchema } from "@/schemas"
+import { UserRegisterSchema } from "@/schemas"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
-export default function Signup() {
+export default function() {
     const [isLoading, setIsLoading] = useState(false)
     const [serverError, setServerError] = useState("")
     const [success, setSuccess] = useState("")
 
-    const form = useForm<z.infer<typeof RegisterSchema>>({
-        resolver: zodResolver(RegisterSchema),
+    const form = useForm<z.infer<typeof UserRegisterSchema>>({
+        resolver: zodResolver(UserRegisterSchema),
         defaultValues: {
             username: "",
             email: "",
@@ -29,13 +29,13 @@ export default function Signup() {
 
     const router = useRouter()
 
-    const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
+    const onSubmit = async (values: z.infer<typeof UserRegisterSchema>) => {
         setIsLoading(true)
         setServerError("")
         setSuccess("")
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/users/", {
+            const response = await fetch("http://127.0.0.1:8000/api/users/register/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export default function Signup() {
             if (response.ok) {
                 setSuccess("Account created successfully!")
                 form.reset()
-                setTimeout(() => router.push("/sign-in"), 2000)
+                setTimeout(() => router.push("/login"), 1000)
             } else {
                 // Handle server validation errors however you want (e.g., password dont match, email taken, username taken)
                 setServerError(data.error || "An error occurred")
@@ -68,7 +68,7 @@ export default function Signup() {
                 <Button><a href="/">Go back home</a></Button>
             </div>
 
-            <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">Sign up</h2>
 
             {/* Success Message */}
             {success && (

@@ -46,16 +46,16 @@ export default function NavBar() {
 
         <div className="flex items-center gap-3">
           <Link
-            href="/sign-in"
+            href="/login"
             className="text-sm font-medium px-3 py-1.5 rounded-lg border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
           >
-            Sign in
+            Login
           </Link>
           <Link
-            href="/sign-up"
+            href="/register"
             className="text-sm font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
           >
-            Sign up
+            Register
           </Link>
           <ModeToggle />
         </div>

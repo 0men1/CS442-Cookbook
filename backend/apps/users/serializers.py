@@ -1,10 +1,51 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate
 from .models import User
 import re
 
 
+
 class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'username',
+                  'email', 'is_chef', 'createdAt', 'updatedAt']
+        extra_kwargs = {
+            'email': {'required': True},
+            'username': {'required': True}
+        }
+
+
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True, min_length=8)
+
+
+    def validate(self, attrs):
+        username = attrs.get('username')
+        password = attrs.get('password')
+
+        if username and password:
+            user = authenticate(
+                request=self.context.get('request'),
+                username=username,
+                password=password
+            )
+
+            if not user:
+                raise serializers.ValidationError(
+                    'Invalid credentials', code='authorization')
+
+        else:
+            raise serializers.ValidationError(
+                'Both username and password are required', code='authorization')
+
+        attrs['user'] = user
+        return attrs
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
     confirm_password = serializers.CharField(write_only=True)
 
