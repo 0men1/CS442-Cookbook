@@ -45,15 +45,28 @@ export default function() {
 
             const data = await response.json()
 
-
             console.log(data)
+
             if (response.ok) {
                 setSuccess("Account created successfully!")
                 form.reset()
                 setTimeout(() => router.push("/login"), 1000)
             } else {
                 // Handle server validation errors however you want (e.g., password dont match, email taken, username taken)
-                setServerError(data.error || "An error occurred")
+                if (data && typeof data == 'object') {
+                    Object.keys(data).forEach((fieldName) => {
+                        if (fieldName in form.getValues()) {
+                            form.setError(fieldName as keyof z.infer<typeof UserRegisterSchema>, {
+                                type: 'server',
+                                message: Array.isArray(data[fieldName]) ? data[fieldName][0] : data[fieldName]
+                            })
+                        } else if (fieldName == "non_field_errors") {
+                            setServerError(data[fieldName][0] || "An error occurred")
+                        }
+                    })
+                } else {
+                    setServerError("An error occurred")
+                }
             }
         } catch (error) {
             setServerError("Network error. Please try again.")
