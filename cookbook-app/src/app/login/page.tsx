@@ -10,6 +10,7 @@ import * as z from "zod"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 
 
@@ -22,21 +23,28 @@ export default function() {
         },
     });
 
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [serverError, setServerError] = useState<string>("")
+    const [success, setSuccess] = useState<string>("")
+
     const router = useRouter()
 
     const onSubmit = async (values: z.infer<typeof UserLoginSchema>) => {
+        setIsLoading(true)
+        setServerError("")
+        setSuccess("")
+
         try {
             const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                //credentials: "include",
                 body: JSON.stringify(values)
             })
 
             const data = await response.json()
-
 
             console.log(data)
 
@@ -44,11 +52,26 @@ export default function() {
                 form.reset()
                 setTimeout(() => router.push("/"), 1000)
             } else {
-                // Handle server validation errors however you want (e.g., password dont match, email taken, username taken)
+                if (data && typeof data == 'object') {
+                    Object.keys(data).forEach((fieldName) => {
+                        if (fieldName in form.getValues()) {
+                            form.setError(fieldName as keyof z.infer<typeof UserLoginSchema>, {
+                                type: 'server',
+                                message: Array.isArray(data[fieldName]) ? data[fieldName][0] : data[fieldName]
+                            })
+                        } else if (fieldName == "non_field_errors") {
+                            setServerError(data[fieldName][0] || "An error occurred")
+                        }
+                    })
+                } else {
+                    setServerError("Internal Error")
+
+                }
             }
         } catch (error) {
-            console.error(error)
+            setServerError("Network Error. Please try again.")
         } finally {
+            setIsLoading(false)
         }
 
     }
@@ -59,6 +82,21 @@ export default function() {
                 <Button><a href="/">Go back home</a> </Button>
             </div>
             <h2 className="text-2xl font-bold mb-6 text-center">Sign In</h2>
+
+            {/* Success Message */}
+            {success && (
+                <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+                    {success}
+                </div>
+            )}
+
+            {/* Server Error Message */}
+            {serverError && (
+                <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                    {serverError}
+                </div>
+            )}
+
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                     <FormField
@@ -71,7 +109,7 @@ export default function() {
                                     <Input
                                         type="text"
                                         placeholder="Enter your username"
-                                        // disabled={isLoading}
+                                        disabled={isLoading}
                                         {...field}
                                     />
                                 </FormControl>
@@ -91,7 +129,7 @@ export default function() {
                                     <Input
                                         type="password"
                                         placeholder="Enter your password"
-                                        //disabled={isLoading}
+                                        disabled={isLoading}
                                         {...field}
                                     />
                                 </FormControl>
@@ -99,8 +137,13 @@ export default function() {
                             </FormItem>
                         )}
                     />
-                    <Button variant="default" className="w-full" type="submit">
-                        Sign in
+                    <Button
+                        variant="default"
+                        className="w-full"
+                        type="submit"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Signing in..." : "Sign in"}
                     </Button>
                 </form>
             </Form>

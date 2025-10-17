@@ -65,7 +65,7 @@ export default function() {
                         }
                     })
                 } else {
-                    setServerError("An error occurred")
+                    setServerError("Internal Error")
                 }
             }
         } catch (error) {

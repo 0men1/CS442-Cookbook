@@ -1,10 +1,9 @@
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth import login
 from django.db import IntegrityError
 

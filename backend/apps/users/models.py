@@ -16,7 +16,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_chef = models.BooleanField(default=False)
 
-    createdAt = models.DateTimeField(auto_now_add=True)
+    createdAt = models.DateTimeField(auto_now=True)
     updatedAt = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = "username"
