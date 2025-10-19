@@ -24,10 +24,9 @@ class UserView(APIView):
         elif username:
             user=get_object_or_404(User, username=username)
         else:
-            return Response(
-                {'error': 'No valid lookup parameter provided'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            users = User.objects
+            serializer = UserSerializer(users, many=True)
+            return Response(serializer.data)
 
         serializer=UserSerializer(user, many=False)
         return Response(serializer.data)

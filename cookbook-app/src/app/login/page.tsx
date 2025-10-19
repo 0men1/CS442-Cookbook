@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 
 
@@ -36,42 +37,24 @@ export default function() {
         setSuccess("")
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/users/login/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values)
-            })
+            const result = await signIn("credentials", {
+                username: values.username,
+                password: values.password,
+                redirect: false,
+            });
 
-            const data = await response.json()
-
-            console.log(data)
-
-            if (response.ok) {
-                form.reset()
-                setTimeout(() => router.push("/"), 1000)
-            } else {
-                if (data && typeof data == 'object') {
-                    Object.keys(data).forEach((fieldName) => {
-                        if (fieldName in form.getValues()) {
-                            form.setError(fieldName as keyof z.infer<typeof UserLoginSchema>, {
-                                type: 'server',
-                                message: Array.isArray(data[fieldName]) ? data[fieldName][0] : data[fieldName]
-                            })
-                        } else if (fieldName == "non_field_errors") {
-                            setServerError(data[fieldName][0] || "An error occurred")
-                        }
-                    })
-                } else {
-                    setServerError("Internal Error")
-
-                }
+            if (result?.error) {
+                setServerError("Invalid username or password");
+            } else if (result?.ok) {
+                setSuccess("Successfully logged in! Redirecting...");
+                form.reset();
+                setTimeout(() => router.push("/"), 1000);
             }
         } catch (error) {
-            setServerError("Network Error. Please try again.")
+            console.error("Login error:", error);
+            setServerError("Network Error. Please try again.");
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
 
     }

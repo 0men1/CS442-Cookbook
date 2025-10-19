@@ -2,9 +2,13 @@
 
 import RecipeGrid from "@/components/recipe/RecipeGrid";
 import SearchBar from "@/components/SearchBar";
+import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 
 export default function Home() {
+
+  const { data: session, status } = useSession()
+
   //hard coding for now
   const recipes = [
     { id: "1", title: "Homemade Pizza", image: "/assets/homemade_pizza.jpg" },
@@ -35,6 +39,21 @@ export default function Home() {
         <RecipeGrid recipes={filteredRecipes} />
       </div>
 
+
+      {
+        status === "unauthenticated" ?
+          (
+            <div>You are not authenticated.</div>
+          ) :
+          (
+            <div>
+              <p>Welcome, {session?.user.username}!</p>
+              <p>Email: {session?.user.email}</p>
+              <button onClick={() => signOut()}>Sign Out</button>
+            </div>
+          )
+
+      }
 
       {/* About Paragraph */}
       <div className="m-10 p-5">
