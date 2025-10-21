@@ -9,10 +9,10 @@ export default function GuidesPage() {
 
   // Hardcoded guide data for now
   const guides = [
-    { id: "1", title: "How to Mince Onions", image: "/assets/mince_onion.jpg" },
-    { id: "2", title: "Boiling Pasta Perfectly", image: "/assets/boil_pasta.jpg" },
-    { id: "3", title: "Knife Safety Basics", image: "/assets/knife_safety.jpg" },
-    { id: "4", title: "Making a Roux", image: "/assets/roux.jpg" },
+    { id: "1", title: "How to Mince Onions", image: "/assets/mince_onions_guide.jpeg" },
+    { id: "2", title: "Boiling Pasta Perfectly", image: "/assets/boil_pasta_guide.jpg" },
+    { id: "3", title: "Knife Safety Basics", image: "/assets/knife_safety_guide.jpg" },
+    { id: "4", title: "Basic Kitchen Hygiene", image: "/assets/hygiene_tutorial_for_cs_kids_guide.jpg" },
   ];
 
   const filteredGuides = guides.filter((guide) =>
