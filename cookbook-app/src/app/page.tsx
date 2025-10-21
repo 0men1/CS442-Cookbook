@@ -34,7 +34,7 @@ export default function Home() {
 
       <div className="p-6">
         <div className="flex justify-center mb-6">
-          <SearchBar onSearch={(q) => setSearchQuery(q)} />
+          <SearchBar onSearch={(q) => setSearchQuery(q)} placeholder="Search recipes..." />
         </div>
         <RecipeGrid recipes={filteredRecipes} />
       </div>
