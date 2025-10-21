@@ -1,6 +1,6 @@
 "use client";
 
-import RecipeGrid from "@/components/recipe/RecipeGrid";
+import GuideGrid from "@/components/guides/GuideGrid";
 import SearchBar from "@/components/SearchBar";
 import { useState } from "react";
 
@@ -25,7 +25,7 @@ export default function GuidesPage() {
         <div className="flex justify-center mb-6">
           <SearchBar onSearch={(q) => setSearchQuery(q)} placeholder="Search guides..." />
         </div>
-        <RecipeGrid recipes={filteredGuides} />
+        <GuideGrid guides={filteredGuides} />
       </div>
     </div>
   );
