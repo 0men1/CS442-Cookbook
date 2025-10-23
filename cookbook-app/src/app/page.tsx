@@ -3,7 +3,7 @@
 import RecipeGrid from "@/components/recipe/RecipeGrid";
 import SearchBar from "@/components/SearchBar";
 import { signOut, useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
 
@@ -22,6 +22,32 @@ export default function Home() {
     { id: "9", title: "Chicken Fried Rice", image: "/assets/chicken-fried-rice.jpg" },
     { id: "10", title: "Chicago Style Hot Dog", image: "/assets/chicago_hot_dog.jpg" },
   ];
+
+
+  useEffect(() => {
+    async function getUserPosts() {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/posts/user/${session?.user.username}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);  // Log actual data, not function
+        return data;
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    }
+
+    getUserPosts();  // Actually call the function
+  }, [session]);
 
   const [searchQuery, setSearchQuery] = useState("");
 

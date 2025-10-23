@@ -1,5 +1,5 @@
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 
@@ -10,7 +10,6 @@ from django.db import IntegrityError
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
 
 from .models import User
-
 
 class UserView(APIView):
     def get(self, request, id=None, username=None, email=None, format=None):
@@ -27,6 +26,7 @@ class UserView(APIView):
             users = User.objects
             serializer = UserSerializer(users, many=True)
             return Response(serializer.data)
+
 
         serializer=UserSerializer(user, many=False)
         return Response(serializer.data)

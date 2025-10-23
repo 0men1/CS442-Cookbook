@@ -44,7 +44,6 @@ INSTALLED_APPS = [
 
     'apps.users',
     'apps.posts',
-    'apps.comments'
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -67,6 +66,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 """
+
+# Required for session cookies
+CORS_ALLOW_CREDENTIALS = True
 
 # only for development mode
 CORS_ALLOW_ALL_ORIGINS = True

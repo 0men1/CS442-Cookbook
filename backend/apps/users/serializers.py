@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'username',
-                  'email', 'is_chef', 'createdAt', 'updatedAt']
+                  'email', 'is_chef', 'created_at', 'updated_at']
         extra_kwargs = {
             'email': {'required': True},
             'username': {'required': True}
@@ -53,7 +53,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'first_name', 'last_name', 'username',
                   'email', 'is_chef', 'password', 'confirm_password',
-                  'createdAt', 'updatedAt']
+                  'created_at', 'updated_at']
         extra_kwargs = {
             'password': {'write_only': True},
             'email': {'required': True},
