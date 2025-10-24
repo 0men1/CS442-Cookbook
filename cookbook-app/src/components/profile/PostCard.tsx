@@ -30,7 +30,7 @@ export default function PostCard({
             {title}
           </h2>
           <p className="text-gray-400 text-sm mb-1">
-            Type: {post_type.toUpperCase()}
+            {post_type.toUpperCase()}
           </p>
           <p className="text-gray-300 text-sm line-clamp-2">
             {body}
