@@ -77,8 +77,6 @@ export default function NavBar() {
             )}
             <ModeToggle />
           </div>
-
-          <ModeToggle />
         </div>
       </div>
     </nav>

@@ -52,13 +52,13 @@ export default function ProfilePage() {
   if (status === "unauthenticated") return <div>You are not logged in.</div>;
 
   return (
-    <div className="flex min-h-screen bg-zinc-900 text-gray-200">
+    <div className="flex min-h-screen">
       {/* LEFT SIDEBAR */}
       {/* <pre className="text-gray-400 text-xs">
         {JSON.stringify(userData, null, 2)}
       </pre> */}
-      <aside className="w-1/4 bg-zinc-800 shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-6 text-gray-100 text-center">
+      <aside className="w-1/4 shadow-lg p-6">
+        <h2 className="text-2xl font-bold mb-6 text-center">
           My Profile
         </h2>
 
@@ -77,11 +77,11 @@ export default function ProfilePage() {
                 </span>
             </p> */}
             <p className="text-md mb-3">
-              <span className="text-gray-400"></span>{" "}
-              <span className="text-gray-100">{userData.username}</span>
+              <span className=""></span>{" "}
+              <span className="">{userData.username}</span>
             </p>
             <p className="text-md mb-3">
-              <span className="text-gray-400">Account Type:</span>{" "}
+              <span className="">Account Type:</span>{" "}
               <span
                 className={
                   userData.is_chef ? "text-yellow-300" : "text-blue-300"
@@ -91,49 +91,49 @@ export default function ProfilePage() {
               </span>
             </p>
             <p className="text-md">
-              <span className="text-gray-400">Member Since:</span>{" "}
-              <span className="text-gray-100">
+              <span className="">Member Since:</span>{" "}
+              <span className="">
                 {new Date(userData.created_at).toLocaleDateString()}
               </span>
             </p>
           </div>
         ) : (
-          <p className="text-gray-500">Loading...</p>
+          <p className="">Loading...</p>
         )}
 
-      {/* Badges */}
-      <h2 className="text-2xl font-bold mb-6 text-gray-100 text-center">
-        Your Badges
-      </h2>
+        {/* Badges */}
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Your Badges
+        </h2>
 
-      <div className="flex flex-wrap justify-center gap-4">
-        <img
-          src="/assets/first_post.jpg"
-          title="First Post"
-          className="w-16 h-16 rounded-full border border-gray-600 hover:scale-105 transition-transform"
-        />
-        <img
-          src="/assets/cook_badge.png"
-          title="Master Chef"
-          className="w-16 h-16 rounded-full border border-gray-600 hover:scale-105 transition-transform"
-        />
-        <img
-          src="/assets/taster_badge.jpg"
-          title="Taster"
-          className="w-16 h-16 rounded-full border border-gray-600 hover:scale-105 transition-transform"
-        />
-      </div>
+        <div className="flex flex-wrap justify-center gap-4">
+          <img
+            src="/assets/first_post.jpg"
+            title="First Post"
+            className="w-16 h-16 rounded-full border border-gray-600 hover:scale-105 transition-transform"
+          />
+          <img
+            src="/assets/cook_badge.png"
+            title="Master Chef"
+            className="w-16 h-16 rounded-full border border-gray-600 hover:scale-105 transition-transform"
+          />
+          <img
+            src="/assets/taster_badge.jpg"
+            title="Taster"
+            className="w-16 h-16 rounded-full border border-gray-600 hover:scale-105 transition-transform"
+          />
+        </div>
 
 
       </aside>
 
       {/* MAIN CONTENT AREA */}
       <main className="flex-1 p-10">
-        <h1 className="text-3xl font-semibold mb-4 text-gray-100">
+        <h1 className="text-3xl font-semibold mb-4">
           Welcome back!
         </h1>
-        <ul className="list-disc ml-6 mt-3 text-gray-300">
-          <h2 className="text-2xl font-bold text-gray-100 mt-8 mb-4">
+        <ul className="list-disc ml-6 mt-3">
+          <h2 className="text-2xl font-bold mt-8 mb-4">
             My Posts
           </h2>
           <PostGrid posts={userPosts} />
