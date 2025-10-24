@@ -23,13 +23,18 @@ class Post(models.Model):
     filename = models.CharField()
     createdAt = models.DateTimeField(default=timezone.now)
     updatedAt = models.DateTimeField(default=timezone.now)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             related_name='posts', on_delete=models.CASCADE)
+    userEmail = models.CharField(max_length=100, blank=True, null=True)
+    userName = models.CharField(max_length=100, blank=True, null=True)
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL,
+    #                          related_name='posts', on_delete=models.CASCADE)
+    # having trouble figuring out how to get the user object from the request, so this wa
+    image = models.ImageField(upload_to='apps/recipes/', blank=True, null=True)
 
     # Recipe fields
 
     ingredients = ""
-    instructions = ""
+    # we are storing all the steps as a JSON string
+    steps = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"ID: {self.id}"
