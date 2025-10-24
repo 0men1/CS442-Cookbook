@@ -69,7 +69,7 @@ export default function ProfilePage() {
         />
 
         {userData ? (
-          <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center text-center mb-20">
             {/* <p className="text-md mb-3">
                 <span className="text-gray-400">Full Name:</span>{" "}
                 <span className="text-gray-100">
@@ -100,6 +100,31 @@ export default function ProfilePage() {
         ) : (
           <p className="text-gray-500">Loading...</p>
         )}
+
+      {/* Badges */}
+      <h2 className="text-2xl font-bold mb-6 text-gray-100 text-center">
+        Your Badges
+      </h2>
+
+      <div className="flex flex-wrap justify-center gap-4">
+        <img
+          src="/assets/first_post.jpg"
+          title="First Post"
+          className="w-16 h-16 rounded-full border border-gray-600 hover:scale-105 transition-transform"
+        />
+        <img
+          src="/assets/cook_badge.png"
+          title="Master Chef"
+          className="w-16 h-16 rounded-full border border-gray-600 hover:scale-105 transition-transform"
+        />
+        <img
+          src="/assets/taster_badge.jpg"
+          title="Taster"
+          className="w-16 h-16 rounded-full border border-gray-600 hover:scale-105 transition-transform"
+        />
+      </div>
+
+
       </aside>
 
       {/* MAIN CONTENT AREA */}
