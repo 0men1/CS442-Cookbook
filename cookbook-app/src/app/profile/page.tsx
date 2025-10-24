@@ -42,8 +42,15 @@ export default function ProfilePage() {
             My Profile
         </h2>
 
+        <img
+          src="/assets/default_pfp.png"
+          alt="Profile Avatar"
+          className="w-42 h-42 rounded-full mx-auto mb-6 border-2 border-gray-600 object-cover"
+        />
+
+
         {userData ? (
-            <div>
+            <div className="flex flex-col items-center text-center">
             {/* <p className="text-md mb-3">
                 <span className="text-gray-400">Full Name:</span>{" "}
                 <span className="text-gray-100">
@@ -51,7 +58,7 @@ export default function ProfilePage() {
                 </span>
             </p> */}
             <p className="text-md mb-3">
-                <span className="text-gray-400">Username:</span>{" "}
+                <span className="text-gray-400"></span>{" "}
                 <span className="text-gray-100">{userData.username}</span>
             </p>
             <p className="text-md mb-3">
@@ -83,14 +90,9 @@ export default function ProfilePage() {
             This will be your dashboard area where we can later add:
         </p>
         <ul className="list-disc ml-6 mt-3 text-gray-300">
-            <li>Your recipes</li>
-            <li>Your guides</li>
-            <li>Recent activity</li>
+            <li>Your posts</li>
         </ul>
         </main>
     </div>
     );
-
-
-
 }
