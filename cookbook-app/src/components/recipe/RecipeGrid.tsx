@@ -1,12 +1,7 @@
+import { RecipePost } from "@/types/posts";
 import RecipeCard from "./RecipeCard";
 
-type Recipe = {
-  id: string;
-  title: string;
-  image: string;
-};
-
-export default function RecipeGrid({ recipes }: { recipes: Recipe[] }) {
+export default function RecipeGrid({ recipes }: { recipes: RecipePost[] }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {recipes.map((recipe) => (
@@ -14,7 +9,7 @@ export default function RecipeGrid({ recipes }: { recipes: Recipe[] }) {
           key={recipe.id}
           id={recipe.id}
           title={recipe.title}
-          image={recipe.image}
+          image={`/assets/sandwich_recipe.jpg`}
         />
       ))}
     </div>

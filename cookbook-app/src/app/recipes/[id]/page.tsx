@@ -4,31 +4,13 @@
 * populates an html page with the info from the json
 * */
 
-interface Recipe {
-  id: string;
-  title: string;
-  image: string;
-  description: string;
-  steps: string[];
-}
 
-/* used for a we dont have this recipe option*/
-const theNullRecipe: Recipe =
-{
-  id: "0",
-  title: "THE NULL RECIPE",
-  image: "/assets/noFood.jpg",
-  description: "NO FOOD WAS FOUND WITH THIS ID\n",
-  steps: [
-    "Go To Restaurant",
-    "Buy Food",
-    "EAT",
-    "cry that you spent money",
-    "go home"
-  ]
-};
 
-async function getRecipe(id: string): Promise<Recipe> {
+// TODO: Fetch recipe DETAILS from backend & Setup endpoint to do it
+
+import { RecipePost } from "@/types/posts";
+
+async function getRecipe(id: string): Promise<RecipePost> {
   try {
     const res = await fetch(`http://localhost:3000/recipes/${id}.json`)
 
