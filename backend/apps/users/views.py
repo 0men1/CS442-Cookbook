@@ -11,24 +11,24 @@ from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerial
 
 from .models import User
 
+
 class UserView(APIView):
     def get(self, request, id=None, username=None, email=None, format=None):
         """
         Fetch a user from the database based off of a single parameter
         """
         if id:
-            user=get_object_or_404(User, id=id)
+            user = get_object_or_404(User, id=id)
         elif email:
-            user=get_object_or_404(User, email=email)
+            user = get_object_or_404(User, email=email)
         elif username:
-            user=get_object_or_404(User, username=username)
+            user = get_object_or_404(User, username=username)
         else:
             users = User.objects
             serializer = UserSerializer(users, many=True)
             return Response(serializer.data)
 
-
-        serializer=UserSerializer(user, many=False)
+        serializer = UserSerializer(user, many=False)
         return Response(serializer.data)
 
     def update(self, request, format=None):
@@ -48,7 +48,8 @@ class UserLoginView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, format=None):
-        serializer = UserLoginSerializer(data=request.data, context={'request': request})
+        serializer = UserLoginSerializer(
+            data=request.data, context={'request': request})
         if serializer.is_valid():
             user = serializer.validated_data['user']
             login(request, user)
@@ -65,24 +66,22 @@ class UserLoginView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class UserRegisterView(APIView):
-    authentication_classes=[SessionAuthentication, BasicAuthentication]
-    permissions_classes=[AllowAny]
-
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permissions_classes = [AllowAny]
 
     def post(self, request, format=None):
         """
         Create a user
         """
-        serializer=UserRegisterSerializer(data=request.data)
+        serializer = UserRegisterSerializer(data=request.data)
 
         if serializer.is_valid():
             try:
-                user=serializer.save()
+                user = serializer.save()
 
-                response_serializer=UserRegisterSerializer(user)
-                response_data=response_serializer.data
+                response_serializer = UserRegisterSerializer(user)
+                response_data = response_serializer.data
 
                 return Response(response_data, status=status.HTTP_200_OK)
 
@@ -98,4 +97,3 @@ class UserRegisterView(APIView):
                 )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
