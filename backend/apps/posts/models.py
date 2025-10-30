@@ -37,15 +37,16 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
     # Recipe fields
     ingredients = models.TextField(blank=True, null=True)
     instructions = models.TextField(blank=True, null=True)
 
-
+    # # image field for Posting images
+    # image = models.ImageField(uplad_to='apps/recipes/', blank=True, null=True)
 
     def __str__(self):
         return f"{self.post_type}: {self.title} by {self.user.username}"
+
 
 
 class PostImage (models.Model):

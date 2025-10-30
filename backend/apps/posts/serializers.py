@@ -79,6 +79,8 @@ class PostSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
-        validated_data['user'] = self.context['request'].user
-        return super().create(validated_data)
 
+        # user needs to be passed in through a different context
+        # use serializer.save(user=user)
+        # validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
