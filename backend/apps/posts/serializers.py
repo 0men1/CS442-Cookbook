@@ -1,17 +1,18 @@
 from rest_framework import serializers
-from apps.posts.models import  Post, PostComment, PostImage
+from apps.posts.models import Post, PostComment, PostImage
 from apps.users.serializers import UserSerializer
 
 
 class PostImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostImage
-        fields = ['id', 'image', 'caption', 'created_at']
+        fields = ['id', 'image_url', 'caption', 'created_at']
         read_only_fields = ['id', 'created_at']
 
 
 class PostCommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
+
     class Meta:
         model = PostComment
         fields = ['id', 'post', 'user', 'body', 'created_at', 'updated_at']
@@ -31,13 +32,12 @@ class PostDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
-            'id', 'post_type', 'title', 'body', 
+            'id', 'post_type', 'title', 'body',
             'user', 'images', 'comments', 'is_liked',
             'like_count', 'ingredients', 'instructions',
             'created_at', 'updated_at'
         ]
-        read_only_fields=['id', 'created_at', 'updated_at']
-
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
     def get_is_liked(self, obj):
         request = self.context.get('request')
@@ -46,28 +46,22 @@ class PostDetailSerializer(serializers.ModelSerializer):
         return False
 
 
-
 class PostSerializer(serializers.ModelSerializer):
     """
     Basic post serial
     """
     user = UserSerializer(read_only=True)
-    like_count = serializers.IntegerField(read_only=True, source='likes.count')
-    image_count = serializers.IntegerField(read_only=True, source='images.count')
-    comment_count = serializers.IntegerField(read_only=True, source='comments.count')
+    images = PostImageSerializer(many=True, required=False, read_only=False)
 
     class Meta:
         model = Post
         fields = [
-            'id', 'post_type', 'title', 'body', 
-            'user', 'like_count', 
-            'image_count', 'comment_count',
-            'ingredients', 'instructions',
+            'id', 'post_type', 'title', 'body',
+            'user', 'images', 'ingredients', 'instructions',
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
 
-    
     def validate(self, attrs):
         if attrs.get('post_type') == Post.POST_TYPE_RECIPE:
             if not attrs.get('ingredients') or not attrs.get('instructions'):
@@ -77,13 +71,12 @@ class PostSerializer(serializers.ModelSerializer):
 
         return attrs
 
-
     def create(self, validated_data):
         images_data = validated_data.pop('images', [])
-
+        validated_data['user'] = self.context['request'].user
         post = super().create(validated_data)
+
         for image_data in images_data:
             PostImage.objects.create(post=post, **image_data)
 
         return post
-

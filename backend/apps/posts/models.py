@@ -20,10 +20,10 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField(max_length=500)
 
-    #Authro
+    # Authro
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        related_name='posts', 
+        related_name='posts',
         on_delete=models.CASCADE
     )
 
@@ -31,19 +31,16 @@ class Post(models.Model):
     # Many to Many Doc cause i need it lol: https://docs.djangoproject.com/en/5.2/topics/db/examples/many_to_many/
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name='liked_posts', 
+        related_name='liked_posts',
         blank=True
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
     # Recipe fields
     ingredients = models.TextField(blank=True, null=True)
     instructions = models.TextField(blank=True, null=True)
-
-
 
     def __str__(self):
         return f"{self.post_type}: {self.title} by {self.user.username}"
@@ -55,13 +52,15 @@ class PostImage (models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    post = models.ForeignKey(Post, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='post_images/')
+    post = models.ForeignKey(
+        Post, related_name='images', on_delete=models.CASCADE)
+    image_url = models.CharField(max_length=255)
     caption = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Image for {self.post.id}"
+
 
 class PostComment(models.Model):
     """
@@ -69,7 +68,8 @@ class PostComment(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post, related_name='comments', on_delete=models.CASCADE)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='comments',
@@ -81,4 +81,3 @@ class PostComment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user.username} on {self.post.id}"
-
