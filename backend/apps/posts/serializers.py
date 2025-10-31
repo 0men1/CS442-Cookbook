@@ -79,8 +79,11 @@ class PostSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
+        images_data = validated_data.pop('images', [])
 
-        # user needs to be passed in through a different context
-        # use serializer.save(user=user)
-        # validated_data['user'] = self.context['request'].user
-        return super().create(validated_data)
+        post = super().create(validated_data)
+        for image_data in images_data:
+            PostImage.objects.create(post=post, **image_data)
+
+        return post
+

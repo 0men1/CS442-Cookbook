@@ -46,13 +46,18 @@ class UserPostsView(APIView):
 class PostsView(APIView):
     permission_classes = [AllowAny]
 
-    def get(self, request, format=None):
+    def get(self, request, id=None, format=None):
         """
         Get all posts from db
         """
-        posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data)
+        if id:
+            post = get_object_or_404(Post, id=id)
+            serializer = PostSerializer(post)
+            return Response(serializer.data)
+        else:
+            posts = Post.objects.all()
+            serializer = PostSerializer(posts, many=True)
+            return Response(serializer.data)
 
 
     """
@@ -84,11 +89,13 @@ class PostsView(APIView):
         # }
 
         # Pass request in context so serializer.create() can access request.user
-        serializer = PostSerializer(data=request, context={'request': request})
+        request.data['post_type'] = Post.POST_TYPE_RECIPE
+        serializer = PostSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             post = serializer.save(user=user)  # user is automatically set in create()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 

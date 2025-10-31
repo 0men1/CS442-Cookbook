@@ -72,7 +72,7 @@ export default function CommunityPage({ params }: { params: { id: string }; }) {
         formData.append("username", session.user.username);
 
         if (recipe.image) {
-            formData.append("image", recipe.image);
+            formData.append("images", recipe.image);
         }
 
         console.log(formData)
@@ -81,13 +81,13 @@ export default function CommunityPage({ params }: { params: { id: string }; }) {
 
             const response = await fetch("http://localhost:8000/api/posts/", {
                 method: "POST",
-                body: formData,
+                body: formData
             });
             const data = await response.json();
             // form.clear();
-
+            
 	 		if (response.ok) {
-				alert("Recipe Submitted: ",${data.title});
+				alert("Recipe Submitted: " + data.title);
 
 	 		} else {
 	 			const errorMessages = Object.entries(data)
