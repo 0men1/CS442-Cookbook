@@ -49,6 +49,8 @@ class CommonFieldsPostTests(TestCase):
 
 
 
+
+
 class ImageAndCommentsPostTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
@@ -57,12 +59,83 @@ class ImageAndCommentsPostTests(TestCase):
             password='test12345'
         )
 
-        post = Post.objects.create(
+        self.post = Post.objects.create(
             post_type = Post.POST_TYPE_THOUGHT,
             title = "Test Thought Title",
             body = "Test the thought body",
             user = self.user
         )
+
+    def test_user_post_with_photo(self):
+        postPhoto = PostImage.objects.create(
+            post = self.post,
+            image_url = "/assets/some_image.jpg",
+            caption = "Caption Test"
+        )
+
+        self.assertEqual(postPhoto.image_url, "/assets/some_image.jpg")
+        self.assertEqual(postPhoto.caption, "Caption Test")
+        self.assertIn(str(self.post.id), str(postPhoto))
+    
+    def test_user_post_with_comment(self):
+        secondUser = User.objects.create_user(
+            username='commenteruser',
+            email='commenteruser@random.com',
+            password="commenter12345"
+        )
+
+        comment = PostComment.objects.create(
+            post = self.post,
+            user = secondUser,
+            body="Nice Thought!"
+        )
+
+        self.assertEqual(comment.body, "Nice Thought!")
+        self.assertEqual(comment.post, self.post)
+        self.assertEqual(comment.user, secondUser)
+        self.assertIn("commenteruser", str(comment))
+        self.assertIn(str(self.post.id), str(comment))
+
+    def test_user_can_like_post(self):
+        likerOne = User.objects.create_user(
+            username='likeruser',
+            email='likeruser@example.com',
+            password='like12345'
+        )
+
+        likerTwo = User.objects.create_user(
+            username='likeruser2',
+            email='likeruser2@example.com',
+            password='like12345'
+        )
+
+        self.post.likes.add(likerOne)
+        self.assertIn(likerOne, self.post.likes.all())
+        self.assertEqual(self.post.likes.count(), 1)
+
+        self.post.likes.remove(likerOne)
+        self.assertEqual(self.post.likes.count(), 0)
+
+        #ensuring users cant like a post twice
+        self.post.likes.add(likerOne)
+        self.post.likes.add(likerOne)
+        self.assertIn(likerOne, self.post.likes.all())
+        self.assertEqual(self.post.likes.count(), 1)
+
+        self.post.likes.remove(likerOne)
+        self.assertEqual(self.post.likes.count(), 0)
+
+
+        #two users liking
+        self.post.likes.add(likerOne)
+        self.post.likes.add(likerTwo)
+        self.assertIn(likerOne, self.post.likes.all())
+        self.assertIn(likerTwo, self.post.likes.all())
+        self.assertEqual(self.post.likes.count(), 2)
+
+
+
+
 
 
 

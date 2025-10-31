@@ -28,6 +28,7 @@ class Post(models.Model):
     )
 
     # Likes
+    # Many to Many Doc cause i need it lol: https://docs.djangoproject.com/en/5.2/topics/db/examples/many_to_many/
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='liked_posts', 
