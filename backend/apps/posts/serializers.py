@@ -73,7 +73,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         images_data = validated_data.pop('images', [])
-        validated_data['user'] = self.context['request'].user
+
         post = super().create(validated_data)
 
         for image_data in images_data:

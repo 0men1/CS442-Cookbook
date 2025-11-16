@@ -59,43 +59,26 @@ class PostsView(APIView):
             serializer = PostSerializer(posts, many=True)
             return Response(serializer.data)
 
+    def delete(self, request, id=None, format=None):
+        post = get_object_or_404(Post, id=id)
+        post.delete();
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     """
     Create a post in the database
     """
+
     def post(self, request, format=None):
-        print("===========REQUEST START=============")
-        print(request.data)
-        print("===========REQUEST = END=============")
+        user_id = request.data.get('user_id')
 
-        # Find user
-        if request.data.get('username'):
-            user = get_object_or_404(User, username=request.data.get('username'))
-        elif request.data.get('id'):
-            user = get_object_or_404(User, id=request.data.get('id'))
-        else:
-            return Response({'error': 'Username required'}, status=status.HTTP_400_BAD_REQUEST)
+        if not user_id:
+            return Response({'error': 'Unknown Author'}, status=status.HTTP_400_BAD_REQUEST)
 
-
-        # Create dummy post data (do NOT include read-only fields)
-
-        # dummy post, i intend to try and make test cases out of this maybe
-        # dummyPost = {
-        #     'post_type': Post.POST_TYPE_RECIPE,
-        #     'title': "CHICKENIZATION FOODS",
-        #     'body': "THE FOOD TURNS U INTO A FLIGHTLESS BIRD TAINTED WIT FEATHERS",
-        #     'instructions': "{1: CHIGGEN, 2:NUGGET}",
-        #     'ingredients': " CHIGGEN, NOOGET"
-        # }
-
-        # Pass request in context so serializer.create() can access request.user
-        request.data['post_type'] = Post.POST_TYPE_RECIPE
+        user = get_object_or_404(User, id=user_id)
         serializer = PostSerializer(data=request.data, context={'request': request})
+
         if serializer.is_valid():
-            post = serializer.save(user=user)  # user is automatically set in create()
+            post = serializer.save(user=user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-

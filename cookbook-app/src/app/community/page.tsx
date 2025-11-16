@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 
-interface recipeDummy{
-    userID:number;
+interface recipeDummy {
+    userID: number;
     title: string;
     image: File | null;
     description: string;
@@ -32,7 +32,7 @@ export default function CommunityPage({ params }: { params: { id: string }; }) {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setRecipe({...recipe, ["image"]: file})
+            setRecipe({ ...recipe, ["image"]: file })
             setImagePreview(URL.createObjectURL(file));
         }
     };
@@ -60,7 +60,6 @@ export default function CommunityPage({ params }: { params: { id: string }; }) {
             return alert("You must be logged in to post a recipe");
         }
 
-        console.log(recipe);
         alert("recipe Posted")
 
         const formData = new FormData();
@@ -75,8 +74,6 @@ export default function CommunityPage({ params }: { params: { id: string }; }) {
             formData.append("images", recipe.image);
         }
 
-        console.log(formData)
-
         try {
 
             const response = await fetch("http://localhost:8000/api/posts/", {
@@ -85,20 +82,18 @@ export default function CommunityPage({ params }: { params: { id: string }; }) {
             });
             const data = await response.json();
             // form.clear();
-            
-	 		if (response.ok) {
-				alert("Recipe Submitted: " + data.title);
 
-	 		} else {
-	 			const errorMessages = Object.entries(data)
-            		.map(([field, messages]) => `${field}: ${(messages as string[]).join(", ")}`)
-            		.join("\n");
+            if (response.ok) {
+                alert("Recipe Submitted: " + data.title);
 
-        		alert(`Failed to submit:\n${errorMessages}`);
-        		throw new Error(errorMessages); 
-	 		}
-            
-            console.log("Recipe submitted:", data);
+            } else {
+                const errorMessages = Object.entries(data)
+                    .map(([field, messages]) => `${field}: ${(messages as string[]).join(", ")}`)
+                    .join("\n");
+
+                alert(`Failed to submit:\n${errorMessages}`);
+                throw new Error(errorMessages);
+            }
         } catch (error) {
             console.error("Error submitting recipe:", error);
         }

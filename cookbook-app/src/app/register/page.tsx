@@ -45,8 +45,6 @@ export default function() {
 
             const data = await response.json()
 
-            console.log(data)
-
             if (response.ok) {
                 setSuccess("Account created successfully!")
                 form.reset()

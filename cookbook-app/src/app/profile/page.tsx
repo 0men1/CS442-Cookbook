@@ -31,7 +31,6 @@ export default function ProfilePage() {
         .then((res) => res.json())
         .then((data: { username: string; post_count: number; posts: Post[] }) => {
           setUserPosts(data.posts);
-          console.log("DEBUG-> Raw posts data:", data);
         })
         .catch((err) => console.error("Error fetching user posts:", err));
     }

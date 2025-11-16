@@ -12,8 +12,6 @@ export const {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        console.log("Token: ", token)
-        console.log("User: ", user)
         token.user = {
           id: user.id,
           username: user.name,

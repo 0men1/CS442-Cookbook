@@ -20,7 +20,6 @@ export default function PostDetailPage(
 				const res = await fetch(`http://127.0.0.1:8000/api/posts/${postId}/`);
 				if (!res.ok) throw new Error("Failed to fetch posts");
 				const data = await res.json()
-				console.log(data)
 				if (data) {
 					setPostDetail(data)
 				}

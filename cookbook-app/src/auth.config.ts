@@ -16,8 +16,6 @@ export default {
 
         try {
 
-          console.log("sending login request")
-
           const response = await fetch(`${BACKEND_URL}/users/login/`, {
             method: "POST",
             headers: {
@@ -35,8 +33,6 @@ export default {
           }
 
           const data = await response.json();
-
-          console.log("Authorization data: ", data)
 
           return {
             id: data.user.id,

@@ -1,9 +1,16 @@
 "use client";
-
 import PostGrid from "@/components/post/PostGrid";
 import SearchBar from "@/components/SearchBar";
 import { Post } from "@/types/posts";
 import { useEffect, useState } from "react";
+import { Plus, X, MessageSquare, UtensilsCrossed } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -12,7 +19,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/posts/`);
+        const res = await fetch("http://127.0.0.1:8000/api/posts/");
         if (!res.ok) throw new Error("Failed to fetch posts");
         const data: Post[] = await res.json();
         if (data) {
@@ -38,8 +45,31 @@ export default function Home() {
             placeholder="Search posts by title..."
           />
         </div>
-
         <PostGrid posts={filteredPosts} />
+      </div>
+
+      <div className="fixed bottom-6 right-6">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="icon" className="h-14 w-14 rounded-full shadow-lg">
+              <Plus className="h-6 w-6" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem asChild>
+              <a href="/create/thought" className="flex items-center gap-2 cursor-pointer">
+                <MessageSquare className="h-4 w-4" />
+                <span>Thought Post</span>
+              </a>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <a href="/create/recipe" className="flex items-center gap-2 cursor-pointer">
+                <UtensilsCrossed className="h-4 w-4" />
+                <span>Recipe Post</span>
+              </a>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

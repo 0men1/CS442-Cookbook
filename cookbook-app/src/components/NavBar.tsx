@@ -13,7 +13,6 @@ export default function NavBar() {
   const pathname = usePathname();
 
   const tabs = [
-    { name: "Recipe Search", href: "/search" },
     { name: "Community", href: "/community" },
     { name: "Guides", href: "/guides" },
     { name: "Profile", href: "/profile" },
