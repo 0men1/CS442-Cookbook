@@ -39,9 +39,7 @@ export async function user_register(data: RegisterUserPayload) {
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({
-			data
-		}),
+		body: JSON.stringify(data),
 	});
 	return handleResponse<UserAuth>(response);
 }
