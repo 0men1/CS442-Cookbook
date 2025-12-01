@@ -1,16 +1,30 @@
-import uuid
-
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView, status
 from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAuthenticated
 
 from apps.posts.models import *
-from apps.posts.serializers import PostSerializer
+from apps.posts.serializers import PostCommentSerializer, PostSerializer
 from apps.users.models import User
-from django.utils import timezone
-from django.db import models
+
+class PostCommentView(APIView):
+    def get(self, request, post_id, format=None):
+        """
+        Get all comments for a specific post
+        """
+        post = get_object_or_404(Post, id=post_id)
+        comments = post.comments.all().order_by('-created_at') 
+        serializer = PostCommentSerializer(comments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, post_id, format=None):
+        post = get_object_or_404(Post, id=post_id)
+        serializer = PostCommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(post=post)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserPostsView(APIView):

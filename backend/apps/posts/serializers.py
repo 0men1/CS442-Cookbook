@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from apps.posts.models import Post, PostComment, PostImage
+from apps.users.models import User
 from apps.users.serializers import UserSerializer
 
 
@@ -9,15 +10,17 @@ class PostImageSerializer(serializers.ModelSerializer):
         fields = ['id', 'image_url', 'caption', 'created_at']
         read_only_fields = ['id', 'created_at']
 
-
 class PostCommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-
+    user_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), 
+        source='user',
+        write_only=True
+    )
     class Meta:
         model = PostComment
-        fields = ['id', 'post', 'user', 'body', 'created_at', 'updated_at']
-        read_only_fields = ['id', 'created_at', 'updated_at']
-
+        fields = ['id', 'post', 'user', 'user_id', 'body', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'post', 'created_at', 'updated_at']
 
 class PostDetailSerializer(serializers.ModelSerializer):
     """
