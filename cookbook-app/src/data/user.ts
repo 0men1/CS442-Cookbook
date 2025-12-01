@@ -1,77 +1,50 @@
-"use server"
+import { API_URL } from "./post";
+import { handleResponse } from "./utils";
 
-const BACKEND_URL = process.env.NEXTAUTH_BACKEND_URL || "http://localhost:8000/api";
-
-export async function get_all_users() {
-	try {
-		const response = await fetch(`${BACKEND_URL}/users/`, {
-			credentials: "include",
-			cache: "no-store",
-		});
-
-		if (!response.ok) {
-			throw new Error(`Failed to fetch users: ${response.status}`);
-		}
-
-		return await response.json();
-	} catch (error) {
-		console.error("Error fetching users:", error);
-		throw error;
-	}
+export interface User {
+	id: number,
+	first_name: string
+	last_name: string,
+	username: string,
+	email: string,
+	is_chef: boolean,
+	created_at: Date,
+	updated_at: Date
 }
 
-export async function get_user_by_id(id: string) {
-	try {
-		const response = await fetch(`${BACKEND_URL}/users/${id}/`, {
-			credentials: "include",
-			cache: "no-store",
-		});
 
-		if (!response.ok) {
-			throw new Error(`Failed to fetch user: ${response.status}`);
-		}
 
-		return await response.json();
-	} catch (error) {
-		console.error("Error fetching user:", error);
-		throw error;
-	}
+export async function get_all_users() {
+	const response = await fetch(`${API_URL}/api/users/`, {
+		method: 'GET',
+		credentials: "include",
+	});
+	return handleResponse<User[]>(response);
+}
+
+export async function get_user_by_id(id: number) {
+	const response = await fetch(`${API_URL}/api/users/${id}/`, {
+		method: 'GET',
+		credentials: "include",
+	});
+	return handleResponse<User>(response);
 }
 
 export async function get_user_by_username(username: string) {
-	try {
-		const response = await fetch(`${BACKEND_URL}/users/?username=${username}`, {
-			credentials: "include",
-			cache: "no-store",
-		});
-
-		if (!response.ok) {
-			throw new Error(`Failed to fetch user: ${response.status}`);
-		}
-
-		const users = await response.json();
-		return users[0] || null;
-	} catch (error) {
-		console.error("Error fetching user:", error);
-		throw error;
-	}
+	const response = await fetch(`${API_URL}/api/users/?username=${username}`, {
+		method: 'GET',
+		credentials: "include",
+		cache: "no-store",
+	});
+	return handleResponse<User>(response);
 }
 
 export async function get_user_by_email(email: string) {
-	try {
-		const response = await fetch(`${BACKEND_URL}/users/?email=${email}`, {
-			credentials: "include",
-			cache: "no-store",
-		});
+	const response = await fetch(`${API_URL}/api/users/?email=${email}`, {
+		method: 'GET',
+		credentials: "include",
+		cache: "no-store",
+	});
 
-		if (!response.ok) {
-			throw new Error(`Failed to fetch user: ${response.status}`);
-		}
-
-		const users = await response.json();
-		return users[0] || null;
-	} catch (error) {
-		console.error("Error fetching user:", error);
-		throw error;
-	}
+	return handleResponse<User>(response);
 }

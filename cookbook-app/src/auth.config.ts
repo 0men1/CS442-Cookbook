@@ -1,6 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-
-const BACKEND_URL = process.env.NEXTAUTH_BACKEND_URL || "http://localhost:8000/api";
+import { user_login } from "./data/auth";
 
 export default {
   providers: [
@@ -15,29 +14,12 @@ export default {
         }
 
         try {
-
-          const response = await fetch(`${BACKEND_URL}/users/login/`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({
-              username: credentials.username,
-              password: credentials.password,
-            }),
-          });
-
-          if (!response.ok) {
-            return null;
-          }
-
-          const data = await response.json();
-
+          const response = await user_login(credentials.username as string, credentials.password as string)
+          if (!response) { return null; }
           return {
-            id: data.user.id,
-            name: data.user.username,
-            email: data.user.email,
+            id: response.user.id,
+            name: response.user.username,
+            email: response.user.email,
           };
         } catch (error) {
           console.error("Authentication error:", error);

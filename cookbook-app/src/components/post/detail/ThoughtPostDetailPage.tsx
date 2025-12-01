@@ -1,10 +1,6 @@
-"use client";
 import { ThoughtPost } from "@/types/posts";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
-import { useState } from "react";
+import { DeletePostButton } from "../DeletePostButton";
 
 export interface ThoughtPostDetailPageProps {
   thought: ThoughtPost;
@@ -12,29 +8,7 @@ export interface ThoughtPostDetailPageProps {
 
 export default function ThoughtPostDetailPage({ thought }: ThoughtPostDetailPageProps) {
   const { data: session } = useSession();
-  const router = useRouter();
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const isAuthor = session?.user?.id.toString() === thought.user.id;
-
-  const handleDelete = async () => {
-    if (!confirm("Delete this thought?")) return;
-
-    setIsDeleting(true);
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/posts/${thought.id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        router.push("/");
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
+  const isAuthor = session?.user?.id === thought.user.id;
 
   return (
     <article className="max-w-3xl mx-auto p-6 rounded-md shadow-md">
@@ -48,14 +22,7 @@ export default function ThoughtPostDetailPage({ thought }: ThoughtPostDetailPage
             </p>
           </div>
           {isAuthor && (
-            <Button
-              variant="destructive"
-              size="icon"
-              onClick={handleDelete}
-              disabled={isDeleting}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <DeletePostButton post_id={thought.id} />
           )}
         </div>
       </header>

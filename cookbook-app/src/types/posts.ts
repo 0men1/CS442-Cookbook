@@ -1,7 +1,5 @@
-
-
 export interface BasePost {
-  id: string;
+  id: number;
   post_type: 'recipe' | 'thought';
   title: string;
   body: string;
@@ -33,6 +31,6 @@ export interface PostImage {
 export type Post = RecipePost | ThoughtPost;
 
 export interface User {
-  id: string;
+  id: number;
   username: string;
 }

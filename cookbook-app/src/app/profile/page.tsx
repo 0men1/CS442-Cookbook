@@ -3,37 +3,24 @@
 import PostGrid from "@/components/post/PostGrid";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import type { Post } from "@/types/posts";
-
-interface UserData {
-  id: string;
-  username: string;
-  is_chef: boolean;
-  created_at: string;
-  first_name?: string;
-  last_name?: string;
-}
+import { get_posts_by_username, UserPostsResponse } from "@/data/post";
+import { get_user_by_id, User } from "@/data/user";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
 
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [userPosts, setUserPosts] = useState<Post[]>([]);
+  const [userData, setUserData] = useState<User | null>(null);
+  const [userPosts, setUserPosts] = useState<UserPostsResponse | null>(null);
 
   useEffect(() => {
-    if (session?.user?.id) {
-      fetch(`http://127.0.0.1:8000/api/users/${session.user.id}/`)
-        .then((res) => res.json())
-        .then((data: UserData) => setUserData(data))
-        .catch((err) => console.error("Error fetching user data:", err));
+    const getUserData = async () => {
+      if (session?.user?.id) {
 
-      fetch(`http://127.0.0.1:8000/api/posts/user/${session.user.username}/`)
-        .then((res) => res.json())
-        .then((data: { username: string; post_count: number; posts: Post[] }) => {
-          setUserPosts(data.posts);
-        })
-        .catch((err) => console.error("Error fetching user posts:", err));
+        setUserData(await get_user_by_id(session.user.id))
+        setUserPosts(await get_posts_by_username(session.user.username))
+      }
     }
+    getUserData();
   }, [session]);
 
   if (status === "unauthenticated") return <div>You are not logged in.</div>;
@@ -105,7 +92,9 @@ export default function ProfilePage() {
 
         <section className="mt-8">
           <h2 className="text-2xl font-bold mb-4">My Posts</h2>
-          <PostGrid posts={userPosts} />
+          {
+            userPosts ? <PostGrid posts={userPosts.posts} /> : "Could not fetch posts"
+          }
         </section>
       </main>
     </div>

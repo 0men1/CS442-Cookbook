@@ -1,7 +1,7 @@
+import { Post } from "@/data/post";
 import PostCard from "./PostCard";
-import { Post as PostType } from "@/types/posts";
 
-export default function PostGrid({ posts }: { posts: PostType[] }) {
+export default function PostGrid({ posts }: { posts: Post[] }) {
   if (!posts || posts.length === 0) {
     return (
       <p className="text-gray-500 text-center mt-4">

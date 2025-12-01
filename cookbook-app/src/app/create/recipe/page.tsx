@@ -3,14 +3,7 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RecipePostSchema } from "@/schemas"
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -18,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { create_post } from "@/data/post";
 
 export default function RecipeForm() {
 	const { data: session } = useSession();
@@ -37,19 +31,12 @@ export default function RecipeForm() {
 	const onSubmit = async (values: z.infer<typeof RecipePostSchema>) => {
 		setIsSubmitting(true);
 		try {
-			const response = await fetch("http://127.0.0.1:8000/api/posts/", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					...values,
-					user_id: session?.user.id,
-					post_type: "recipe"
-				})
-			});
-
-			if (response.ok) {
+			const response = await create_post({
+				...values,
+				user_id: session?.user.id!,
+				post_type: "recipe"
+			})
+			if (response) {
 				router.push("/");
 			}
 		} catch (error) {

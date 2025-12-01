@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { user_register } from "@/data/auth"
 
 export default function() {
     const [isLoading, setIsLoading] = useState(false)
@@ -35,22 +36,13 @@ export default function() {
         setSuccess("")
 
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/users/register/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values)
-            })
+            const data = await user_register(values)
 
-            const data = await response.json()
-
-            if (response.ok) {
+            if (data) {
                 setSuccess("Account created successfully!")
                 form.reset()
                 setTimeout(() => router.push("/login"), 1000)
             } else {
-                // Handle server validation errors however you want (e.g., password dont match, email taken, username taken)
                 if (data && typeof data == 'object') {
                     Object.keys(data).forEach((fieldName) => {
                         if (fieldName in form.getValues()) {

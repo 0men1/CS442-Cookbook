@@ -1,9 +1,8 @@
 "use client";
 import PostGrid from "@/components/post/PostGrid";
 import SearchBar from "@/components/SearchBar";
-import { Post } from "@/types/posts";
 import { useEffect, useState } from "react";
-import { Plus, X, MessageSquare, UtensilsCrossed } from "lucide-react";
+import { Plus, MessageSquare, UtensilsCrossed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { get_all_posts, Post } from "@/data/post";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -19,9 +19,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/posts/");
-        if (!res.ok) throw new Error("Failed to fetch posts");
-        const data: Post[] = await res.json();
+        const data = await get_all_posts();
         if (data) {
           setPosts(data);
         }

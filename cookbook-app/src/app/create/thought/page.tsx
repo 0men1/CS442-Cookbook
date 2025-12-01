@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { create_post } from "@/data/post";
 
 export default function ThoughtForm() {
 	const { data: session } = useSession();
@@ -35,19 +36,13 @@ export default function ThoughtForm() {
 	const onSubmit = async (values: z.infer<typeof ThoughtPostSchema>) => {
 		setIsSubmitting(true);
 		try {
-			const response = await fetch("http://127.0.0.1:8000/api/posts/", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					...values,
-					user_id: session?.user.id,
-					post_type: "thought"
-				})
-			});
-
-			if (response.ok) {
+			const response = await create_post({
+				user_id: session?.user.id!,
+				post_type: "thought",
+				title: values.title,
+				body: values.body
+			})
+			if (response) {
 				router.push("/");
 			}
 		} catch (error) {

@@ -1,10 +1,6 @@
-"use client";
 import { RecipePost } from "@/types/posts"
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
-import { useState } from "react";
+import { DeletePostButton } from "../DeletePostButton";
 
 export interface RecipePostProps {
   recipe: RecipePost
@@ -12,29 +8,7 @@ export interface RecipePostProps {
 
 export function RecipePostDetailPage({ recipe }: RecipePostProps) {
   const { data: session } = useSession();
-  const router = useRouter();
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const isAuthor = session?.user?.id === recipe.user.id;
-
-  const handleDelete = async () => {
-    if (!confirm("Delete this recipe?")) return;
-
-    setIsDeleting(true);
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/posts/${recipe.id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        router.push("/");
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
+  const isAuthor = session?.user?.id! === recipe.user.id;
 
   return (
     <article className="max-w-3xl mx-auto p-6 rounded-md shadow-md">
@@ -48,14 +22,7 @@ export function RecipePostDetailPage({ recipe }: RecipePostProps) {
             </p>
           </div>
           {isAuthor && (
-            <Button
-              variant="destructive"
-              size="icon"
-              onClick={handleDelete}
-              disabled={isDeleting}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <DeletePostButton post_id={recipe.id} />
           )}
         </div>
       </header>
