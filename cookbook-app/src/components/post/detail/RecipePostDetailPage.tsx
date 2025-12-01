@@ -1,6 +1,11 @@
+"use client"
+
 import { RecipePost } from "@/types/posts"
 import { useSession } from "next-auth/react";
 import { DeletePostButton } from "../DeletePostButton";
+import { get_comments, PostComment } from "@/data/post";
+import { useEffect, useState } from "react";
+import CommentForm from "../CommentPostForm";
 
 export interface RecipePostProps {
   recipe: RecipePost
@@ -9,6 +14,23 @@ export interface RecipePostProps {
 export function RecipePostDetailPage({ recipe }: RecipePostProps) {
   const { data: session } = useSession();
   const isAuthor = session?.user?.id! === recipe.user.id;
+
+
+  const [comments, setComments] = useState<PostComment[]>(recipe.comments || []);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      const response = await get_comments(recipe.id);
+      if (response) {
+        setComments(response)
+      }
+    }
+    fetchComments()
+  }, [])
+
+  const handleNewComment = (newComment: PostComment) => {
+    setComments((prev) => [...prev, newComment]);
+  };
 
   return (
     <article className="max-w-3xl mx-auto p-6 rounded-md shadow-md">
@@ -62,6 +84,19 @@ export function RecipePostDetailPage({ recipe }: RecipePostProps) {
       <footer className="border-t pt-4 flex flex-col md:flex-row md:justify-between text-sm text-muted-foreground">
         <span>Last updated: {new Date(recipe.updated_at).toLocaleDateString()}</span>
       </footer>
+
+
+      {/* Comments List */}
+      <div className="space-y-4">
+        {comments.map((comment) => (
+          <div key={comment.id} className="border-b p-2">
+            <span className="font-bold">{comment.user.username}</span>
+            <p>{comment.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <CommentForm postId={recipe.id} onCommentAdded={handleNewComment} />
     </article>
   );
 }

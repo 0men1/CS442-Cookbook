@@ -17,6 +17,7 @@ export interface Post {
 	images: PostImage[];
 	ingredients?: string;
 	instructions?: string;
+	comments: PostComment[]
 	created_at: string;
 	updated_at: string;
 }
@@ -38,6 +39,42 @@ export interface CreatePostPayload {
 }
 
 export const API_URL = "http://127.0.0.1:8000"
+
+export interface PostComment {
+	id: string;
+	post: string;
+	user: User;
+	body: string;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface CreateCommentPayload {
+	body: string;
+	user_id: number;
+}
+
+export async function create_comment(postId: number, data: CreateCommentPayload) {
+	const response = await fetch(`${API_URL}/api/posts/${postId}/comment/`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(data),
+		credentials: "include",
+	});
+	return handleResponse<PostComment>(response);
+}
+
+export async function get_comments(postId: number) {
+	const response = await fetch(`${API_URL}/api/posts/${postId}/comment/`, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+	return handleResponse<PostComment[]>(response);
+}
 
 export async function get_all_posts() {
 	const response = await fetch(`${API_URL}/api/posts/`, {

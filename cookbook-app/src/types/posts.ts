@@ -1,9 +1,12 @@
+import { PostComment } from "@/data/post";
+
 export interface BasePost {
   id: number;
   post_type: 'recipe' | 'thought';
   title: string;
   body: string;
   user: User;
+  comments: PostComment[];
   likes: User[];
   created_at: string;
   updated_at: string;
