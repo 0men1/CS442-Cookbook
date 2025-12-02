@@ -48,10 +48,8 @@ class PostCommentView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class UserPostsView(APIView):
     permission_classes = [AllowAny]
-
     def get(self, request, id=None, username=None, format=None):
         if username:
             user = get_object_or_404(User, username=username)
@@ -60,15 +58,21 @@ class UserPostsView(APIView):
         else:
             return Response(
                 {'error': 'Username or ID required'},
-                status=status.HTTP_400_BAD_REQUEST)
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        posts = user.posts.all()
-        serializer = PostSerializer(posts, many=True)
+        authored_posts = user.posts.all()
+        authored_serializer = PostSerializer(authored_posts, many=True)
+
+        liked_posts = Post.objects.filter(likes=user)
+        liked_serializer = PostSerializer(liked_posts, many=True)
 
         return Response({
             'username': user.username,
-            'post_count': posts.count(),
-            'posts': serializer.data
+            'post_count': authored_posts.count(),
+            'liked_count': liked_posts.count(),
+            'posts': authored_serializer.data,
+            'liked_posts': liked_serializer.data
         })
 
     def post(self, request, format=None):
@@ -76,7 +80,6 @@ class UserPostsView(APIView):
         Create a post in the database
         """
         return Response('This is a Post post request')
-
 
 class PostsView(APIView):
     permission_classes = [AllowAny]

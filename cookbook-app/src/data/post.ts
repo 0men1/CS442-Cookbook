@@ -28,6 +28,8 @@ export interface UserPostsResponse {
 	username: string;
 	post_count: number;
 	posts: Post[];
+	liked_count: number;
+	liked_posts: Post[];
 }
 
 export interface CreatePostPayload {

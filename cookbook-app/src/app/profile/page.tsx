@@ -8,26 +8,39 @@ import { get_user_by_id, User } from "@/data/user";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
-
   const [userData, setUserData] = useState<User | null>(null);
   const [userPosts, setUserPosts] = useState<UserPostsResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const getUserData = async () => {
+    const getData = async () => {
       if (session?.user?.id) {
-
-        setUserData(await get_user_by_id(session.user.id))
-        setUserPosts(await get_posts_by_username(session.user.username))
+        setIsLoading(true);
+        try {
+          // Parallel data fetching for speed
+          const [user, posts] = await Promise.all([
+            get_user_by_id(session.user.id),
+            get_posts_by_username(session.user.username)
+          ]);
+          setUserData(user);
+          setUserPosts(posts);
+        } catch (error) {
+          console.error("Failed to fetch profile data", error);
+        } finally {
+          setIsLoading(false);
+        }
       }
+    };
+
+    if (status === "authenticated") {
+      getData();
     }
-    getUserData();
-  }, [session]);
+  }, [session, status]);
 
   if (status === "unauthenticated") return <div>You are not logged in.</div>;
 
   return (
     <div className="flex min-h-screen">
-      {/* LEFT SIDEBAR */}
       <aside className="w-1/4 shadow-lg p-6">
         <h2 className="text-2xl font-bold mb-6 text-center">My Profile</h2>
 
@@ -61,7 +74,7 @@ export default function ProfilePage() {
             </p>
           </div>
         ) : (
-          <p className="">Loading...</p>
+          <p className="">Loading profile...</p>
         )}
 
         {/* Badges */}
@@ -87,17 +100,41 @@ export default function ProfilePage() {
       </aside>
 
       {/* MAIN CONTENT AREA */}
-      <main className="flex-1 p-10">
+      <main className="flex-1 p-10 space-y-12">
         <h1 className="text-3xl font-semibold mb-4">Welcome back!</h1>
 
-        <section className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">My Posts</h2>
-          {
-            userPosts ? <PostGrid posts={userPosts.posts} /> : "Could not fetch posts"
-          }
+        {/* MY POSTS SECTION */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 border-b pb-2">My Posts</h2>
+          {isLoading ? (
+            <p>Loading your posts...</p>
+          ) : userPosts?.posts && userPosts.posts.length > 0 ? (
+            <PostGrid posts={userPosts.posts} />
+          ) : (
+            <p className="text-gray-500 italic">You haven't posted anything yet.</p>
+          )}
+        </section>
+
+        {/* LIKED POSTS SECTION */}
+        <section>
+          <div className="flex items-baseline gap-3 mb-4 border-b pb-2">
+            <h2 className="text-2xl font-bold">Liked Posts</h2>
+            <span className="text-muted-foreground text-sm">
+              ({userPosts?.liked_count || 0})
+            </span>
+          </div>
+
+
+
+          {isLoading ? (
+            <p>Loading liked posts...</p>
+          ) : userPosts?.liked_posts && userPosts.liked_posts.length > 0 ? (
+            <PostGrid posts={userPosts.liked_posts} />
+          ) : (
+            <p className="text-gray-500 italic">You haven't liked any posts yet.</p>
+          )}
         </section>
       </main>
     </div>
   );
 }
-

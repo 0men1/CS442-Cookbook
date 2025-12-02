@@ -22,7 +22,7 @@ export async function get_all_users() {
 	return handleResponse<User[]>(response);
 }
 
-export async function get_user_by_id(id: number) {
+export async function get_user_by_id(id: string) {
 	const response = await fetch(`${API_URL}/api/users/${id}/`, {
 		method: 'GET',
 		credentials: "include",
