@@ -1,20 +1,19 @@
 "use client"
 
-import { ThoughtPost } from "@/types/posts";
 import { useSession } from "next-auth/react";
 import { DeletePostButton } from "../DeletePostButton";
 import CommentForm from "../CommentPostForm";
-import { get_comments, PostComment } from "@/data/post";
+import { get_comments, Post, PostComment } from "@/data/post";
 import { useEffect, useState } from "react";
+import LikePostButton from "../LikePostButton";
 
 export interface ThoughtPostDetailPageProps {
-  thought: ThoughtPost;
+  thought: Post;
 }
 
 export default function ThoughtPostDetailPage({ thought }: ThoughtPostDetailPageProps) {
   const { data: session } = useSession();
   const isAuthor = session?.user?.id === thought.user.id;
-
   const [comments, setComments] = useState<PostComment[]>(thought.comments || []);
 
   useEffect(() => {
@@ -25,7 +24,7 @@ export default function ThoughtPostDetailPage({ thought }: ThoughtPostDetailPage
       }
     }
     fetchComments()
-  }, [])
+  }, [thought.id])
 
   const handleNewComment = (newComment: PostComment) => {
     setComments((prev) => [...prev, newComment]);
@@ -37,10 +36,18 @@ export default function ThoughtPostDetailPage({ thought }: ThoughtPostDetailPage
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h1 className="text-4xl font-bold mb-2">{thought.title}</h1>
-            <p className="text-sm text-muted-foreground">
-              By <span className="font-semibold">{thought.user.username}</span> &nbsp;·&nbsp;
-              {new Date(thought.created_at).toLocaleDateString()}
-            </p>
+            <div className="flex items-center gap-6">
+              <p className="text-sm text-muted-foreground">
+                By <span className="font-semibold">{thought.user.username}</span> &nbsp;·&nbsp;
+                {new Date(thought.created_at).toLocaleDateString()}
+              </p>
+              <LikePostButton
+                postId={thought.id}
+                initialLikeCount={thought.like_count ?? 0}
+                initialIsLiked={thought.is_liked ?? false}
+                userId={session?.user?.id!}
+              />
+            </div>
           </div>
           {isAuthor && (
             <DeletePostButton post_id={thought.id} />
@@ -64,7 +71,6 @@ export default function ThoughtPostDetailPage({ thought }: ThoughtPostDetailPage
         Last updated: {new Date(thought.updated_at).toLocaleDateString()}
       </footer>
 
-      {/* Comments List */}
       <div className="space-y-4">
         {comments.map((comment) => (
           <div key={comment.id} className="border-b p-2">

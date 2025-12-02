@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { Trash2 } from "lucide-react";
 
 interface DeletePostButtonProps {
-  post_id: number
+  post_id: string
 }
 
 export function DeletePostButton({ post_id }: DeletePostButtonProps) {

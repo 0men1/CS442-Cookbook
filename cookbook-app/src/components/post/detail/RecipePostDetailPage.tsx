@@ -1,21 +1,19 @@
 "use client"
 
-import { RecipePost } from "@/types/posts"
 import { useSession } from "next-auth/react";
 import { DeletePostButton } from "../DeletePostButton";
-import { get_comments, PostComment } from "@/data/post";
+import { get_comments, Post, PostComment } from "@/data/post";
 import { useEffect, useState } from "react";
 import CommentForm from "../CommentPostForm";
+import LikePostButton from "../LikePostButton";
 
 export interface RecipePostProps {
-  recipe: RecipePost
+  recipe: Post
 }
 
 export function RecipePostDetailPage({ recipe }: RecipePostProps) {
   const { data: session } = useSession();
   const isAuthor = session?.user?.id! === recipe.user.id;
-
-
   const [comments, setComments] = useState<PostComment[]>(recipe.comments || []);
 
   useEffect(() => {
@@ -38,10 +36,18 @@ export function RecipePostDetailPage({ recipe }: RecipePostProps) {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h1 className="text-4xl font-bold mb-2">{recipe.title}</h1>
-            <p className="text-sm text-muted-foreground">
-              By <span className="font-semibold">{recipe.user.username}</span> &nbsp;·&nbsp;
-              {new Date(recipe.created_at).toLocaleDateString()}
-            </p>
+            <div className="flex items-center gap-6">
+              <p className="text-sm text-muted-foreground">
+                By <span className="font-semibold">{recipe.user.username}</span> &nbsp;·&nbsp;
+                {new Date(recipe.created_at).toLocaleDateString()}
+              </p>
+              <LikePostButton
+                postId={recipe.id}
+                initialLikeCount={recipe.like_count!}
+                initialIsLiked={recipe.is_liked!}
+                userId={session?.user.id!}
+              />
+            </div>
           </div>
           {isAuthor && (
             <DeletePostButton post_id={recipe.id} />

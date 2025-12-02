@@ -1,7 +1,7 @@
 import { PostComment } from "@/data/post";
 
 export interface BasePost {
-  id: number;
+  id: string;
   post_type: 'recipe' | 'thought';
   title: string;
   body: string;
@@ -34,6 +34,6 @@ export interface PostImage {
 export type Post = RecipePost | ThoughtPost;
 
 export interface User {
-  id: number;
+  id: string;
   username: string;
 }

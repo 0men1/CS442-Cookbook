@@ -2,46 +2,45 @@
 
 import { RecipePostDetailPage } from "@/components/post/detail/RecipePostDetailPage";
 import ThoughtPostDetailPage from "@/components/post/detail/ThoughtPostDetailPage";
-import { Post, RecipePost, ThoughtPost } from "@/types/posts";
+import { get_post_by_id, Post } from "@/data/post";
+import { useSession } from "next-auth/react";
 import { use, useState, useEffect } from "react";
 
 
-export default function PostDetailPage(
-	{ params }:
-		{ params: Promise<{ postId: string }> }) {
-
+export default function PostDetailPage({ params }: { params: Promise<{ postId: string }> }) {
 	const { postId } = use(params)
 	const [postDetail, setPostDetail] = useState<Post | null>(null)
+	const { data: session, status } = useSession();
 
 	useEffect(() => {
-		async function fetchPostDetails() {
-
+		if (status === "loading") return;
+		if (!session?.user?.id) return;
+		const fetchPost = async () => {
 			try {
-				const res = await fetch(`http://127.0.0.1:8000/api/posts/${postId}/`);
-				if (!res.ok) throw new Error("Failed to fetch posts");
-				const data = await res.json()
-				if (data) {
-					setPostDetail(data)
+				const response = await get_post_by_id(postId, session.user.id);
+				if (response) {
+					setPostDetail(response);
 				}
 			} catch (error) {
-				console.error("Error feching posts: ", error);
+				console.error("Failed to fetch post:", error);
 			}
-		}
-		fetchPostDetails()
-	}, [])
+		};
+
+		fetchPost();
+
+	}, [postId, session, status]);
 
 
 
 	if (postDetail != null) {
+		console.log("Post detail", postDetail)
 		if (postDetail.post_type == "recipe") {
 			return (
-				<RecipePostDetailPage recipe={postDetail as RecipePost} />
+				<RecipePostDetailPage recipe={postDetail as Post} />
 			)
 		} else if (postDetail.post_type == "thought") {
 			return (
-				<div>
-					<ThoughtPostDetailPage thought={postDetail as ThoughtPost} />
-				</div>
+				<ThoughtPostDetailPage thought={postDetail as Post} />
 			)
 		}
 	}

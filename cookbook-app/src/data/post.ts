@@ -18,6 +18,8 @@ export interface Post {
 	ingredients?: string;
 	instructions?: string;
 	comments: PostComment[]
+	is_liked?: boolean,
+	like_count?: number,
 	created_at: string;
 	updated_at: string;
 }
@@ -29,7 +31,7 @@ export interface UserPostsResponse {
 }
 
 export interface CreatePostPayload {
-	user_id: number;
+	user_id: string;
 	post_type: string;
 	title: string;
 	body: string;
@@ -51,10 +53,27 @@ export interface PostComment {
 
 export interface CreateCommentPayload {
 	body: string;
-	user_id: number;
+	user_id: string;
 }
 
-export async function create_comment(postId: number, data: CreateCommentPayload) {
+export interface LikeResponse {
+	is_liked: boolean;
+	like_count: number;
+}
+
+export async function like_post(postId: string, userId: string) {
+	const response = await fetch(`${API_URL}/api/posts/${postId}/like/`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({ user_id: userId }),
+		credentials: "include",
+	});
+	return handleResponse<LikeResponse>(response);
+}
+
+export async function create_comment(postId: string, data: CreateCommentPayload) {
 	const response = await fetch(`${API_URL}/api/posts/${postId}/comment/`, {
 		method: "POST",
 		headers: {
@@ -66,7 +85,7 @@ export async function create_comment(postId: number, data: CreateCommentPayload)
 	return handleResponse<PostComment>(response);
 }
 
-export async function get_comments(postId: number) {
+export async function get_comments(postId: string) {
 	const response = await fetch(`${API_URL}/api/posts/${postId}/comment/`, {
 		method: "GET",
 		headers: {
@@ -84,8 +103,8 @@ export async function get_all_posts() {
 	return handleResponse<Post[]>(response);
 }
 
-export async function get_post_by_id(id: string) {
-	const response = await fetch(`${API_URL}/api/posts/${id}/`, {
+export async function get_post_by_id(id: string, user_id: string) {
+	const response = await fetch(`${API_URL}/api/posts/${id}/?user_id=${user_id}`, {
 		method: 'GET',
 		credentials: "include",
 	});

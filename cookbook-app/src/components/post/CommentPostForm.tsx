@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useState, FormEvent } from "react";
 
 interface CommentFormProps {
-  postId: number;
+  postId: string;
   onCommentAdded?: (newComment: PostComment) => void;
 }
 
@@ -24,7 +24,7 @@ export default function CommentForm({ postId, onCommentAdded }: CommentFormProps
     setError(null);
 
     try {
-      const response = await create_comment(postId, { body, user_id: session.data?.user.id });
+      const response = await create_comment(postId, { body, user_id: session.data?.user.id! });
 
       if (!response) {
         setError("Failed to post comment.");

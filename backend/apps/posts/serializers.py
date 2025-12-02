@@ -43,11 +43,10 @@ class PostDetailSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at', 'updated_at']
 
     def get_is_liked(self, obj):
-        request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            return obj.likes.filter(id=request.user.id).exists()
+        user_id = self.context.get('user_id')
+        if user_id:
+            return obj.likes.filter(id=user_id).exists()
         return False
-
 
 class PostSerializer(serializers.ModelSerializer):
     """
@@ -71,7 +70,6 @@ class PostSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     "Recipe posts require ingredients and instructions."
                 )
-
         return attrs
 
     def create(self, validated_data):

@@ -4,8 +4,30 @@ from rest_framework.views import APIView, status
 from rest_framework.permissions import AllowAny
 
 from apps.posts.models import *
-from apps.posts.serializers import PostCommentSerializer, PostSerializer
+from apps.posts.serializers import PostCommentSerializer, PostDetailSerializer, PostSerializer
 from apps.users.models import User
+
+class PostLikeView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request, post_id, format=None):
+        user_id = request.data.get('user_id')
+        if not user_id:
+            return Response({"error": "user_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = get_object_or_404(User, id=user_id)
+        post = get_object_or_404(Post, id=post_id)
+
+        if post.likes.filter(id=user.id).exists():
+            post.likes.remove(user)
+            is_liked = False
+        else:
+            post.likes.add(user)
+            is_liked = True
+
+        return Response({
+            "is_liked": is_liked,
+            "like_count": post.likes.count()
+        }, status=status.HTTP_200_OK)
 
 class PostCommentView(APIView):
     def get(self, request, post_id, format=None):
@@ -38,8 +60,7 @@ class UserPostsView(APIView):
         else:
             return Response(
                 {'error': 'Username or ID required'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+                status=status.HTTP_400_BAD_REQUEST)
 
         posts = user.posts.all()
         serializer = PostSerializer(posts, many=True)
@@ -66,7 +87,8 @@ class PostsView(APIView):
         """
         if id:
             post = get_object_or_404(Post, id=id)
-            serializer = PostSerializer(post)
+            user_id = request.query_params.get('user_id')
+            serializer = PostDetailSerializer(post, context={'request': request, 'user_id': user_id})
             return Response(serializer.data)
         else:
             posts = Post.objects.all()
