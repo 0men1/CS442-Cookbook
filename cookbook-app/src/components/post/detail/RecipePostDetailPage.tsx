@@ -7,6 +7,16 @@ import { useEffect, useState } from "react";
 import CommentForm from "../CommentPostForm";
 import LikePostButton from "../LikePostButton";
 
+
+function parseIngredients(raw: string | undefined): string[] {
+  if (!raw) return [];
+
+  return raw
+    .split("\n")
+}
+
+
+
 export interface RecipePostProps {
   recipe: Post
 }
@@ -77,9 +87,16 @@ export function RecipePostDetailPage({ recipe }: RecipePostProps) {
       )}
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">Ingredients</h2>
-        <pre className="whitespace-pre-wrap bg-muted p-4 rounded border text-foreground">
-          {recipe.ingredients}
-        </pre>
+        <div className="flex flex-wrap gap-2">
+          {parseIngredients(recipe.ingredients).map((ingredients, index) => (
+            <div
+              key={index}
+              className="px-3 py-1 bg-muted border rounded-md text-sm"
+            >
+              {ingredients}
+            </div>
+          ))}
+        </div>
       </section>
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-2">Instructions</h2>
