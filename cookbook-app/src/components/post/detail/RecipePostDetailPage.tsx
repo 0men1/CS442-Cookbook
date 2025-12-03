@@ -106,7 +106,7 @@ export function RecipePostDetailPage({ recipe }: RecipePostProps) {
               key={index}
               className="flex items-start gap-3 bg-muted p-4 rounded-md border shadow-sm"
             >
-              <div className="font-bold text-primary">
+              <div className="font-bold text-primary shrink-0">
                 Step {index + 1}
               </div>
               <div className="text-foreground">
