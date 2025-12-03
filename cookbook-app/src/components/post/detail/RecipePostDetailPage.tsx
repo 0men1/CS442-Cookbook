@@ -8,7 +8,7 @@ import CommentForm from "../CommentPostForm";
 import LikePostButton from "../LikePostButton";
 
 
-function parseIngredients(raw: string | undefined): string[] {
+function parsePlainTextNewline(raw: string | undefined): string[] {
   if (!raw) return [];
 
   return raw
@@ -88,7 +88,7 @@ export function RecipePostDetailPage({ recipe }: RecipePostProps) {
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">Ingredients</h2>
         <div className="flex flex-wrap gap-2">
-          {parseIngredients(recipe.ingredients).map((ingredients, index) => (
+          {parsePlainTextNewline(recipe.ingredients).map((ingredients, index) => (
             <div
               key={index}
               className="px-3 py-1 bg-muted border rounded-md text-sm"
@@ -100,9 +100,21 @@ export function RecipePostDetailPage({ recipe }: RecipePostProps) {
       </section>
       <section className="mb-8">
         <h2 className="text-2xl font-semibold mb-2">Instructions</h2>
-        <pre className="whitespace-pre-wrap bg-muted p-4 rounded border text-foreground">
-          {recipe.instructions}
-        </pre>
+        <div className="space-y-3">
+          {parsePlainTextNewline(recipe.instructions).map((step, index) => (
+            <div
+              key={index}
+              className="flex items-start gap-3 bg-muted p-4 rounded-md border shadow-sm"
+            >
+              <div className="font-bold text-primary">
+                Step {index + 1}
+              </div>
+              <div className="text-foreground">
+                {step}
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
       <footer className="border-t pt-4 flex flex-col md:flex-row md:justify-between text-sm text-muted-foreground">
         <span>Last updated: {new Date(recipe.updated_at).toLocaleDateString()}</span>

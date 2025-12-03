@@ -121,7 +121,7 @@ export default function RecipeForm() {
 									<FormLabel>Instructions</FormLabel>
 									<FormControl>
 										<Textarea
-											placeholder="Step-by-step cooking instructions"
+											placeholder="Step-by-step cooking instructions (one instruction per line)"
 											className="min-h-40 resize-none"
 											{...field}
 										/>
