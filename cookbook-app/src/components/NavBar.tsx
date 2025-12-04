@@ -13,6 +13,7 @@ export default function NavBar() {
   const pathname = usePathname();
 
   const tabs = [
+    { name: "Community", href: "/community" },
     { name: "Guides", href: "/guides" },
     { name: "Profile", href: "/profile" },
   ];
