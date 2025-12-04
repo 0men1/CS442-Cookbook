@@ -53,10 +53,6 @@ export default function ProfilePage() {
         {userData ? (
           <div className="flex flex-col items-center text-center mb-20">
             <p className="text-md mb-3">
-              <span className=""></span>{" "}
-              <span className="">{userData.username}</span>
-            </p>
-            <p className="text-md mb-3">
               <span className="">Account Type:</span>{" "}
               <span
                 className={

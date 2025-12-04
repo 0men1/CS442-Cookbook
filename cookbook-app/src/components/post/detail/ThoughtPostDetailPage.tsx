@@ -6,6 +6,8 @@ import CommentForm from "../CommentPostForm";
 import { get_comments, Post, PostComment } from "@/data/post";
 import { useEffect, useState } from "react";
 import LikePostButton from "../LikePostButton";
+import Link from "next/link";
+
 
 export interface ThoughtPostDetailPageProps {
   thought: Post;
@@ -38,8 +40,13 @@ export default function ThoughtPostDetailPage({ thought }: ThoughtPostDetailPage
             <h1 className="text-4xl font-bold mb-2">{thought.title}</h1>
             <div className="flex items-center gap-6">
               <p className="text-sm text-muted-foreground">
-                By <span className="font-semibold">{thought.user.username}</span> &nbsp;·&nbsp;
-                {new Date(thought.created_at).toLocaleDateString()}
+                <Link
+                  href={`/profile/${thought.user.id}`}
+                  className="font-semibold hover:underline"
+                >
+                  {thought.user.username}
+                </Link>
+                &nbsp;·&nbsp; {new Date(thought.created_at).toLocaleDateString()}
               </p>
               <LikePostButton
                 postId={thought.id}

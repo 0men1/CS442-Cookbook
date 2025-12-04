@@ -6,6 +6,7 @@ import { get_comments, Post, PostComment } from "@/data/post";
 import { useEffect, useState } from "react";
 import CommentForm from "../CommentPostForm";
 import LikePostButton from "../LikePostButton";
+import Link from "next/link";
 
 
 function parsePlainTextNewline(raw: string | undefined): string[] {
@@ -48,8 +49,13 @@ export function RecipePostDetailPage({ recipe }: RecipePostProps) {
             <h1 className="text-4xl font-bold mb-2">{recipe.title}</h1>
             <div className="flex items-center gap-6">
               <p className="text-sm text-muted-foreground">
-                By <span className="font-semibold">{recipe.user.username}</span> &nbsp;·&nbsp;
-                {new Date(recipe.created_at).toLocaleDateString()}
+                <Link
+                  href={`/profile/${recipe.user.id}`}
+                  className="font-semibold hover:underline"
+                >
+                  By {recipe.user.username}
+                </Link>
+                 &nbsp;·&nbsp; {new Date(recipe.created_at).toLocaleDateString()}
               </p>
               <LikePostButton
                 postId={recipe.id}
