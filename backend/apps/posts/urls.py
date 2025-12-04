@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import PostsView, UserPostsView, PostCommentView, PostLikeView
+from .views_upload import ImageUploadView
 
 urlpatterns = [
     path('', PostsView.as_view()),
@@ -8,4 +9,5 @@ urlpatterns = [
     path('<uuid:post_id>/comment/', PostCommentView.as_view()),
     path('<uuid:post_id>/like/', PostLikeView.as_view()),
     path('user/<uuid:id>/', UserPostsView.as_view()),
+    path("upload/", ImageUploadView.as_view(), name="image-upload")
 ]
