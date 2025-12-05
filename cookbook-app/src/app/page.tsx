@@ -160,7 +160,7 @@ export default function Home() {
       <div className="fixed bottom-6 right-6">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button size="icon" className="h-14 w-14 rounded-full shadow-lg">
+            <Button size="icon" className="h-14 w-14 rounded-full shadow-lg" data-testid="create-post">
               <Plus className="h-6 w-6" />
             </Button>
           </DropdownMenuTrigger>
@@ -169,6 +169,7 @@ export default function Home() {
               <a
                 href="/create/thought"
                 className="flex items-center gap-2 cursor-pointer"
+                data-testid = "tht-post"
               >
                 <MessageSquare className="h-4 w-4" />
                 <span>Thought Post</span>
@@ -178,6 +179,7 @@ export default function Home() {
               <a
                 href="/create/recipe"
                 className="flex items-center gap-2 cursor-pointer"
+                data-testid = "rcp-post"
               >
                 <UtensilsCrossed className="h-4 w-4" />
                 <span>Recipe Post</span>
