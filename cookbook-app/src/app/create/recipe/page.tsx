@@ -171,6 +171,7 @@ export default function RecipeForm() {
 							)}
 						/>
 						<Button
+							data-testid="create-recipe-submit"
 							onClick={form.handleSubmit(onSubmit)}
 							className="w-full"
 							disabled={isSubmitting}
