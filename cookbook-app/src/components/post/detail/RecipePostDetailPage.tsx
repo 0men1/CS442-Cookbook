@@ -70,27 +70,23 @@ export function RecipePostDetailPage({ recipe }: RecipePostProps) {
           )}
         </div>
       </header>
-      {recipe.images && recipe.images.length > 0 && (
-        <section className="mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {recipe.images.map((img) => (
-              <figure key={img.id} className="rounded overflow-hidden shadow-sm">
-                <img
-                  src={`/assets/${img.image_url}`}
-                  alt={img.caption ?? "Recipe image"}
-                  className="object-cover w-full h-64"
-                  loading="lazy"
-                />
-                {img.caption && (
-                  <figcaption className="text-center text-muted-foreground text-sm mt-1">
-                    {img.caption}
-                  </figcaption>
-                )}
-              </figure>
-            ))}
-          </div>
-        </section>
-      )}
+      <section className="mb-6">
+        <div className="mb-6 flex justify-center">
+          {(recipe.images?.length ? recipe.images : [
+            { id: "fallback", image_url: "/assets/default_recipe.jpg"}
+          ]).map((img) => (
+            <figure key={img.id} className="rounded overflow-hidden shadow-sm">
+              <img
+                src={img.image_url}
+                alt={"Recipe Image"}
+                className="object-cover w-full h-64"
+                loading="lazy"
+              />
+            </figure>
+          ))}
+        </div>
+      </section>
+
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-2">Ingredients</h2>
         <div className="flex flex-wrap gap-2">

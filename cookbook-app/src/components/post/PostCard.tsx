@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Post } from "@/types/posts";
+import { Post } from "@/data/post";
 
 type PostCardProps = {
   id: string;
@@ -22,7 +22,7 @@ export default function PostCard({
     <Link href={`/post/${id}`}>
       <div className="cursor-pointer rounded-lg overflow-hidden shadow hover:shadow-lg transition bg-zinc-800 border border-zinc-700">
         <img
-          src={`/assets/${image}`}
+          src={image}
           alt={title}
           className="w-full h-40 object-cover"
           loading="lazy"

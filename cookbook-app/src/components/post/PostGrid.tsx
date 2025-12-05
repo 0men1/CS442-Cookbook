@@ -14,7 +14,8 @@ export default function PostGrid({ posts }: { posts: Post[] }) {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
       {posts.map((post) => {
         // Extract image URL: if images field available and non-empty, use first image's url (image_url or image_url fallback)
-        let imageUrl: string | undefined;
+        let imageUrl = post.images?.[0]?.image_url;
+
 
         if ("images" in post && post.images && post.images.length > 0) {
           imageUrl = post.images[0].image_url ?? (post.images[0].image_url ?? undefined);
@@ -22,7 +23,11 @@ export default function PostGrid({ posts }: { posts: Post[] }) {
 
         // Fallback dummy image URL if no images
         if (!imageUrl) {
-          imageUrl = "/assets/sandwich_recipe.jpg";
+          if (post.post_type === "thought") {
+            imageUrl = "/assets/default_thought.jpg";
+          } else {
+            imageUrl = "/assets/default_recipe.jpg"
+          }
         }
 
         return (

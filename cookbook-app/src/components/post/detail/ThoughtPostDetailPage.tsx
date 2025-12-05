@@ -61,16 +61,22 @@ export default function ThoughtPostDetailPage({ thought }: ThoughtPostDetailPage
           )}
         </div>
       </header>
-      {thought.images && thought.images.length > 0 && (
-        <div className="mb-6 flex justify-center">
-          <img
-            src={`/assets/${thought.images[0].image_url}`}
-            alt={thought.images[0].caption ?? "Thought image"}
-            className="max-h-80 object-contain rounded"
-            loading="lazy"
-          />
-        </div>
-      )}
+      <div className="mb-6 flex justify-center">
+        <img
+          src={
+            thought.images?.length
+              ? thought.images[0].image_url
+              : "/assets/default_thought.jpg"
+          }
+          alt={
+            thought.images?.length
+              ? thought.images[0].caption ?? "Thought image"
+              : "No image uploaded"
+          }
+          className="max-h-80 object-contain rounded"
+          loading="lazy"
+        />
+      </div>
       <section className="mb-8 whitespace-pre-wrap text-lg leading-relaxed">
         {thought.body}
       </section>
