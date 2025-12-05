@@ -38,10 +38,12 @@ export const RecipePostSchema = z.object({
 	body: z.string().min(1, "Body is required").max(500, "Body must be 500 characters or less"),
 	ingredients: z.string().min(1, "Ingredients are required"),
 	instructions: z.string().min(1, "Instructions are required"),
+	image: z.any().optional(),
 });
 
 export const ThoughtPostSchema = z.object({
 	title: z.string().min(1, "Title is required").max(200, "Title must be 200 characters or less"),
 	body: z.string().min(1, "Body is required").max(500, "Body must be 500 characters or less"),
+	image: z.any().optional(),
 });
 

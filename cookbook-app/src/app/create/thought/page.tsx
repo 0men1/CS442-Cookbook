@@ -36,21 +36,40 @@ export default function ThoughtForm() {
 	const onSubmit = async (values: z.infer<typeof ThoughtPostSchema>) => {
 		setIsSubmitting(true);
 		try {
-			const response = await create_post({
-				user_id: session?.user.id!,
-				post_type: "thought",
-				title: values.title,
-				body: values.body
-			})
-			if (response) {
-				router.push("/");
+			let uploadedImageUrl = null;
+
+			if (values.image instanceof File) {
+			const fd = new FormData();
+			fd.append("file", values.image);
+
+			const uploadRes = await fetch("http://127.0.0.1:8000/api/posts/upload/", {
+				method: "POST",
+				body: fd,
+			});
+
+			const uploadJson = await uploadRes.json();
+			uploadedImageUrl = uploadJson.url;
 			}
+
+			const payload = {
+			title: values.title,
+			body: values.body,
+			user_id: session?.user.id!,
+			post_type: "thought",
+			images: uploadedImageUrl
+				? [{ image_url: uploadedImageUrl }]
+				: [],
+			};
+
+			const response = await create_post(payload);
+
+			if (response) router.push("/");
 		} catch (error) {
 			console.error(error);
 		} finally {
 			setIsSubmitting(false);
 		}
-	}
+	};
 
 	return (
 		<Card className="w-full max-w-2xl mx-auto">
@@ -79,6 +98,23 @@ export default function ThoughtForm() {
 										/>
 									</FormControl>
 									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="image"
+							render={({ field }) => (
+								<FormItem>
+								<FormLabel>Upload Image (optional)</FormLabel>
+								<FormControl>
+									<Input
+									type="file"
+									accept="image/*"
+									onChange={(e) => field.onChange(e.target.files?.[0])}
+									/>
+								</FormControl>
+								<FormMessage />
 								</FormItem>
 							)}
 						/>
