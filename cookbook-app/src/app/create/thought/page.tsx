@@ -35,6 +35,9 @@ export default function ThoughtForm() {
 
 	const onSubmit = async (values: z.infer<typeof ThoughtPostSchema>) => {
 		setIsSubmitting(true);
+		console.log("CHECKING LOG TING");
+		console.log("session?.user.id!", session?.user.id!);
+		
 		try {
 			const response = await create_post({
 				user_id: session?.user.id!,
@@ -51,6 +54,9 @@ export default function ThoughtForm() {
 			setIsSubmitting(false);
 		}
 	}
+
+	console.log("LOGGGING");
+			console.log("session?.user.id!", session?.user.id!);
 
 	return (
 		<Card className="w-full max-w-2xl mx-auto">
@@ -109,6 +115,7 @@ export default function ThoughtForm() {
 							onClick={form.handleSubmit(onSubmit)}
 							className="w-full"
 							disabled={isSubmitting}
+							data-testid="create-thought-submit"
 						>
 							{isSubmitting ? "Creating..." : "Create Thought"}
 						</Button>
