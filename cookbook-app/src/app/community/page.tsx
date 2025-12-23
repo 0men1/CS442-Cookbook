@@ -55,7 +55,7 @@ export default function UsersPage() {
         placeholder="Search users..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full p-3 mb-6 rounded-md bg-zinc-800 text-white border border-zinc-700"
+        className="w-full p-3 mb-6 rounded-md text-white border border-zinc-700"
       />
 
       {loading ? (
@@ -67,7 +67,7 @@ export default function UsersPage() {
           {filtered.map((user) => (
             <li
               key={user.id}
-              className="flex items-center justify-between p-4 rounded-md bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 transition"
+              className="flex items-center justify-between p-4 rounded-md border border-zinc-700 hover:bg-zinc-300 transition"
             >
               <div className="flex items-center gap-4">
                 <img

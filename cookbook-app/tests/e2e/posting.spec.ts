@@ -5,161 +5,161 @@ const maxTimeout = 5000;
 
 test('create and view thought post', async ({ page, request }) => {
 
-  // creating unique user
-  const timestamp = Date.now();
+	// creating unique user
+	const timestamp = Date.now();
 
-  const user = `testuser_${timestamp}`;
-  const pass = "GrandChickenTastifyierPasdfk;asdklfja;sdkf!";
-  const email = `${user}@example.com`;
+	const user = `testuser_${timestamp}`;
+	const pass = "GrandChickenTastifyierPasdfk;asdklfja;sdkf!";
+	const email = `${user}@example.com`;
 
-  console.log("user", user);
-  console.log("pass", pass);
-  console.log("email", email);
+	console.log("user", user);
+	console.log("pass", pass);
+	console.log("email", email);
 
-  /* register test user */
-  await page.goto("http://localhost:3000/register");
+	/* register test user */
+	await page.goto("http://localhost:3000/register");
 
-  await page.fill('input[name="username"]', user);
-  await page.fill('input[name="email"]', email);
-  await page.fill('input[name="password"]', pass );
-  await page.fill('input[name="confirm_password"]', pass);
+	await page.fill('input[name="username"]', user);
+	await page.fill('input[name="email"]', email);
+	await page.fill('input[name="password"]', pass);
+	await page.fill('input[name="confirm_password"]', pass);
 
-  await page.click('button[type="submit"]');
+	await page.click('button[type="submit"]');
 
-  await page.waitForURL("http://localhost:3000/login", {
-  	timeout: maxTimeout
-  });
+	await page.waitForURL("http://localhost:3000/login", {
+		timeout: maxTimeout
+	});
 
-  await expect(page).toHaveURL("http://localhost:3000/login");
+	await expect(page).toHaveURL("http://localhost:3000/login");
 
-  /* sign in with the new user */
+	/* sign in with the new user */
 
-  await page.fill('input[name="username"]', user);
-  await page.fill('input[name="password"]', pass );
+	await page.fill('input[name="username"]', user);
+	await page.fill('input[name="password"]', pass);
 
-  await page.click('button[type="submit"]');
+	await page.click('button[type="submit"]');
 
-  await page.waitForURL("http://localhost:3000", {
-  	timeout: maxTimeout
-  });
+	await page.waitForURL("http://localhost:3000", {
+		timeout: maxTimeout
+	});
 
-  await expect(page).toHaveURL("http://localhost:3000");
+	await expect(page).toHaveURL("http://localhost:3000");
 
-  /* go to the create thought page */
-  await page.click('[data-testid="create-post"]');
-  await page.waitForSelector('[data-testid="tht-post"]', { timeout: maxTimeout });
-  await page.click('[data-testid="tht-post"]');
+	/* go to the create thought page */
+	await page.click('[data-testid="create-post"]');
+	await page.waitForSelector('[data-testid="tht-post"]', { timeout: maxTimeout });
+	await page.click('[data-testid="tht-post"]');
 
-  await page.waitForURL("http://localhost:3000/create/thought", {
-  	timeout: maxTimeout
-  });
+	await page.waitForURL("http://localhost:3000/create/thought", {
+		timeout: maxTimeout
+	});
 
-  await expect(page).toHaveURL("http://localhost:3000/create/thought");
+	await expect(page).toHaveURL("http://localhost:3000/create/thought");
 
-  /* create a thought */
+	/* create a thought */
 
-  const title = `Test_thought ${timestamp}`;
-  const body = `this is test body ${timestamp}`;
+	const title = `Test_thought ${timestamp}`;
+	const body = `this is test body ${timestamp}`;
 
-  console.log("title", title);
-  console.log("body", body);
-  
-  
-  await page.fill('input[name="title"]', title);
-  await page.fill('textarea[name="body"]', body);
-  
-  await page.waitForTimeout(1000);
+	console.log("title", title);
+	console.log("body", body);
 
-  await page.click('[data-testid="create-thought-submit"]');
-  
-  await page.waitForFunction(() => window.location.pathname === "/");
-  await expect(page).toHaveURL("http://localhost:3000");
-  
-  /* checking if the post is there now*/
-  await page.waitForSelector('text=' + title, { timeout: maxTimeout });
-  await expect(page.locator(`text=${title}`)).toBeVisible();
+
+	await page.fill('input[name="title"]', title);
+	await page.fill('textarea[name="body"]', body);
+
+	await page.waitForTimeout(1000);
+
+	await page.click('[data-testid="create-thought-submit"]');
+
+	await page.waitForFunction(() => window.location.pathname === "/");
+	await expect(page).toHaveURL("http://localhost:3000");
+
+	/* checking if the post is there now*/
+	await page.waitForSelector('text=' + title, { timeout: maxTimeout });
+	await expect(page.locator(`text=${title}`)).toBeVisible();
 
 });
 
 test('create and view recipe post', async ({ page, request }) => {
 
-  // creating unique user
-  const timestamp = Date.now();
+	// creating unique user
+	const timestamp = Date.now();
 
-  const user = `testuser_${timestamp}`;
-  const pass = "GrandChickenTastifyierPasdfk;asdklfja;sdkf!";
-  const email = `${user}@example.com`;
+	const user = `testuser_${timestamp}`;
+	const pass = "GrandChickenTastifyierPasdfk;asdklfja;sdkf!";
+	const email = `${user}@example.com`;
 
-  console.log("user", user);
-  console.log("pass", pass);
-  console.log("email", email);
+	console.log("user", user);
+	console.log("pass", pass);
+	console.log("email", email);
 
-  /* register test user */
-  await page.goto("http://localhost:3000/register");
+	/* register test user */
+	await page.goto("http://localhost:3000/register");
 
-  await page.fill('input[name="username"]', user);
-  await page.fill('input[name="email"]', email);
-  await page.fill('input[name="password"]', pass );
-  await page.fill('input[name="confirm_password"]', pass);
+	await page.fill('input[name="username"]', user);
+	await page.fill('input[name="email"]', email);
+	await page.fill('input[name="password"]', pass);
+	await page.fill('input[name="confirm_password"]', pass);
 
-  await page.click('button[type="submit"]');
+	await page.click('button[type="submit"]');
 
-  await page.waitForURL("http://localhost:3000/login", {
-  	timeout: maxTimeout
-  });
+	await page.waitForURL("http://localhost:3000/login", {
+		timeout: maxTimeout
+	});
 
-  await expect(page).toHaveURL("http://localhost:3000/login");
+	await expect(page).toHaveURL("http://localhost:3000/login");
 
-  /* sign in with the new user */
+	/* sign in with the new user */
 
-  await page.fill('input[name="username"]', user);
-  await page.fill('input[name="password"]', pass );
+	await page.fill('input[name="username"]', user);
+	await page.fill('input[name="password"]', pass);
 
-  await page.click('button[type="submit"]');
+	await page.click('button[type="submit"]');
 
-  await page.waitForURL("http://localhost:3000", {
-  	timeout: maxTimeout
-  });
+	await page.waitForURL("http://localhost:3000", {
+		timeout: maxTimeout
+	});
 
-  await expect(page).toHaveURL("http://localhost:3000");
+	await expect(page).toHaveURL("http://localhost:3000");
 
-  /* go to the create thought page */
-  await page.click('[data-testid="create-post"]');
-  await page.waitForSelector('[data-testid="rcp-post"]', { timeout: maxTimeout });
-  await page.click('[data-testid="rcp-post"]');
+	/* go to the create thought page */
+	await page.click('[data-testid="create-post"]');
+	await page.waitForSelector('[data-testid="rcp-post"]', { timeout: maxTimeout });
+	await page.click('[data-testid="rcp-post"]');
 
-  await page.waitForURL("http://localhost:3000/create/recipe", {
-  	timeout: maxTimeout
-  });
+	await page.waitForURL("http://localhost:3000/create/recipe", {
+		timeout: maxTimeout
+	});
 
-  await expect(page).toHaveURL("http://localhost:3000/create/recipe");
+	await expect(page).toHaveURL("http://localhost:3000/create/recipe");
 
-  /* create a recipe */
+	/* create a recipe */
 
-  const title = `Test_RecipeName ${timestamp}`;
-  const body = `this is test recipeDescription ${timestamp}`;
-  const ingredients =`this is testIngredients ${timestamp}`;
-  const instructions = `this is test instructions ${timestamp}`;
+	const title = `Test_RecipeName ${timestamp}`;
+	const body = `this is test recipeDescription ${timestamp}`;
+	const ingredients = `this is testIngredients ${timestamp}`;
+	const instructions = `this is test instructions ${timestamp}`;
 
-  console.log("recipe name", title);
-  console.log("body", body);
-  console.log("ingredients", ingredients);
-  console.log("instructions", instructions);
-    
-  await page.fill('input[name="title"]', title);
-  await page.fill('textarea[name="body"]', body);
-  await page.fill('textarea[name="ingredients"]', ingredients);
-  await page.fill('textarea[name="instructions"]', instructions);
-  
-  await page.waitForTimeout(1000);
+	console.log("recipe name", title);
+	console.log("body", body);
+	console.log("ingredients", ingredients);
+	console.log("instructions", instructions);
 
-  await page.click('[data-testid="create-recipe-submit"]');
-  
-  await page.waitForFunction(() => window.location.pathname === "/");
-  await expect(page).toHaveURL("http://localhost:3000");
-  
-  /* checking if the post is there now*/
-  await page.waitForSelector('text=' + title, { timeout: maxTimeout });
-  await expect(page.locator(`text=${title}`)).toBeVisible();
+	await page.fill('input[name="title"]', title);
+	await page.fill('textarea[name="body"]', body);
+	await page.fill('textarea[name="ingredients"]', ingredients);
+	await page.fill('textarea[name="instructions"]', instructions);
+
+	await page.waitForTimeout(1000);
+
+	await page.click('[data-testid="create-recipe-submit"]');
+
+	await page.waitForFunction(() => window.location.pathname === "/");
+	await expect(page).toHaveURL("http://localhost:3000");
+
+	/* checking if the post is there now*/
+	await page.waitForSelector('text=' + title, { timeout: maxTimeout });
+	await expect(page.locator(`text=${title}`)).toBeVisible();
 
 });
